@@ -13,11 +13,14 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:staged": "yarn test --findRelatedTests",
+    "test:push": "yarn test --coverage",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -41,7 +44,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "git-commit-msg-linter": "^5.0.8",
+    "husky": "^9.1.7",
     "jest": "29.3.1",
+    "lint-staged": "^15.5.1",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
