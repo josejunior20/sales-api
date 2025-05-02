@@ -1,10 +1,16 @@
 import { Replace } from '@shared/helpers/replace';
 import { randomUUID } from 'crypto';
 
+export enum UserRole {
+  admin = 'ADMIN',
+  user = 'USER',
+}
+
 export interface UserProps {
   name: string;
   email: string;
   password: string;
+  roles: UserRole[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +25,7 @@ export class User {
     this._id = id ?? randomUUID();
     this.userProps = {
       ...userProps,
+      roles: userProps.roles ?? [UserRole.user],
       createdAt: userProps.createdAt ?? new Date(),
       updatedAt: userProps.updatedAt ?? new Date(),
     };
@@ -47,6 +54,17 @@ export class User {
   }
   public set password(password: string) {
     this.userProps.password = password;
+  }
+
+  public get roles(): UserRole[] {
+    return this.userProps.roles;
+  }
+  public set roles(roles: UserRole[]) {
+    this.userProps.roles = roles;
+  }
+
+  public hasRole(role: UserRole): boolean {
+    return this.userProps.roles.includes(role);
   }
 
   public get createddAt(): Date {
