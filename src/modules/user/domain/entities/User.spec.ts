@@ -21,20 +21,20 @@ describe('User entity', () => {
       name: 'Alice',
       email: 'alice@example.com',
       password: 'securepassword',
-      roles: [UserRole.admin],
+      roles: [UserRole.ADMIN],
     });
 
     expect(user.name).toBe('Alice');
     expect(user.email).toBe('alice@example.com');
     expect(user.password).toBe('securepassword');
-    expect(user.roles).toContain(UserRole.admin);
+    expect(user.roles).toContain(UserRole.ADMIN);
   });
 
   it('should correctly check user roles', () => {
-    const user = makeUser({ roles: [UserRole.user] });
+    const user = makeUser({ roles: [UserRole.USER] });
 
-    expect(user.hasRole(UserRole.user)).toBe(true);
-    expect(user.hasRole(UserRole.admin)).toBe(false);
+    expect(user.hasRole(UserRole.USER)).toBe(true);
+    expect(user.hasRole(UserRole.ADMIN)).toBe(false);
   });
 
   it('should allow updating user properties', () => {

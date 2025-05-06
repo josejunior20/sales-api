@@ -7,7 +7,7 @@ export function makeUser(override: Override = {}) {
     name: 'John Doe',
     email: 'johndoe@mail.com',
     password: 'test123',
-    roles: [UserRole.user],
+    roles: [UserRole.USER],
     ...override,
   });
 }

@@ -2,15 +2,15 @@ import { Replace } from '@shared/helpers/replace';
 import { randomUUID } from 'crypto';
 
 export enum UserRole {
-  admin = 'ADMIN',
-  user = 'USER',
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 export interface UserProps {
   name: string;
   email: string;
   password: string;
-  roles: UserRole[];
+  roles?: UserRole[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,7 +25,7 @@ export class User {
     this._id = id ?? randomUUID();
     this.userProps = {
       ...userProps,
-      roles: userProps.roles ?? [UserRole.user],
+      roles: userProps.roles ?? [UserRole.USER],
       createdAt: userProps.createdAt ?? new Date(),
       updatedAt: userProps.updatedAt ?? new Date(),
     };
@@ -67,7 +67,7 @@ export class User {
     return this.userProps.roles.includes(role);
   }
 
-  public get createddAt(): Date {
+  public get createdAt(): Date {
     return this.userProps.createdAt;
   }
 
