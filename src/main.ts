@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { swaggerConfig } from '@shared/docs/swagger-config';
-import { IncorrectValuesException } from '@shared/exceptions/incorrectValuesException';
+import { IncorrectValuesException } from '@shared/exceptions/incorrect-values-exception';
 import { mapperClassValidationErrorToAppException } from '@shared/exceptions/mappers/exception.mapper';
 
 import { AppModule } from './app.module';
