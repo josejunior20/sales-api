@@ -1,22 +1,22 @@
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
-import { UserRepositoryInMemory } from '@test/User/repositories/user-repository-in-memory';
+import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
 import { UserRole } from '../entities/User';
 import { UpdateUserRoleService } from './update-user-role-service';
 
 let updateUserRoleService: UpdateUserRoleService;
-let userRepositoryInMemory: UserRepositoryInMemory;
+let inMemoryUserRepository: InMemoryUserRepository;
 
 describe('Update User Role', () => {
   beforeEach(() => {
-    userRepositoryInMemory = new UserRepositoryInMemory();
-    updateUserRoleService = new UpdateUserRoleService(userRepositoryInMemory);
+    inMemoryUserRepository = new InMemoryUserRepository();
+    updateUserRoleService = new UpdateUserRoleService(inMemoryUserRepository);
   });
 
   it('should be able to update user roles', async () => {
     const user = makeUser(); // Cria um usuário com role USER por padrão
-    await userRepositoryInMemory.create(user);
+    await inMemoryUserRepository.create(user);
 
     const newRoles = [UserRole.ADMIN];
 
@@ -40,7 +40,7 @@ describe('Update User Role', () => {
 
   it('should update the updatedAt date when roles are set', async () => {
     const user = makeUser();
-    await userRepositoryInMemory.create(user);
+    await inMemoryUserRepository.create(user);
 
     const oldUpdatedAt = user.updatedAt;
 

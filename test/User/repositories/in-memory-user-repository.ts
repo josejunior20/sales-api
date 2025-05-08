@@ -1,7 +1,7 @@
 import { User } from '@modules/user/domain/entities/User';
 import { UserRepository } from '@modules/user/domain/repositories/user-repository';
 
-export class UserRepositoryInMemory implements UserRepository {
+export class InMemoryUserRepository implements UserRepository {
   public users: User[] = [];
 
   async create(user: User): Promise<void> {
@@ -16,7 +16,7 @@ export class UserRepositoryInMemory implements UserRepository {
     return user;
   }
 
-  async findByMany(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.users;
   }
 

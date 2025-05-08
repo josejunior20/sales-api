@@ -1,20 +1,20 @@
 import { UserConflictException } from '@modules/user/exceptions/user-conflict-exception';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
-import { UserRepositoryInMemory } from '@test/User/repositories/user-repository-in-memory';
+import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
 import { CreateUserService } from './create-user-service';
 
 let createUserService: CreateUserService;
 let encryptedPassword: FakeHashRepository;
-let userRepositoryInMemory: UserRepositoryInMemory;
+let inMemoryUserRepository: InMemoryUserRepository;
 
 describe('Create User', () => {
   beforeEach(() => {
-    userRepositoryInMemory = new UserRepositoryInMemory();
+    inMemoryUserRepository = new InMemoryUserRepository();
     encryptedPassword = new FakeHashRepository();
     createUserService = new CreateUserService(
-      userRepositoryInMemory,
+      inMemoryUserRepository,
       encryptedPassword,
     );
   });
@@ -36,7 +36,7 @@ describe('Create User', () => {
   it('Should be able to throw error when create user with already exist email', () => {
     const user = makeUser();
 
-    userRepositoryInMemory.users = [user];
+    inMemoryUserRepository.users = [user];
 
     expect(
       async () => await createUserService.execute(makeUser()),
