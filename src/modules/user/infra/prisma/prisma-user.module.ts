@@ -2,10 +2,12 @@ import { HashPasswordRepository } from '@modules/user/domain/repositories/hash-p
 import { UserRepository } from '@modules/user/domain/repositories/user-repository';
 import { HashPasswordProvider } from '@modules/user/providers/hash-password-provider/hash-password-provider';
 import { Module } from '@nestjs/common';
+import { DbModule } from '@shared/database/database.module';
 
 import { PrismaUserRepository } from './repositories/prisma-user-repository';
 
 @Module({
+  imports: [DbModule],
   providers: [
     {
       provide: UserRepository,
@@ -16,6 +18,6 @@ import { PrismaUserRepository } from './repositories/prisma-user-repository';
       useClass: HashPasswordProvider,
     },
   ],
-  exports: [UserRepository, HashPasswordProvider],
+  exports: [UserRepository, HashPasswordRepository],
 })
 export class PrismaUserModule {}
