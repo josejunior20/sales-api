@@ -22,7 +22,7 @@ describe('Update User Role', () => {
 
     const response = await updateUserRoleService.execute({
       userId: user.id,
-      roles: newRoles,
+      role: newRoles,
     });
 
     expect(response.user.roles).toEqual(newRoles);
@@ -33,7 +33,7 @@ describe('Update User Role', () => {
     await expect(
       updateUserRoleService.execute({
         userId: 'non-existent-id',
-        roles: [UserRole.ADMIN],
+        role: [UserRole.ADMIN],
       }),
     ).rejects.toThrow(UserNotFoundException);
   });
@@ -48,7 +48,7 @@ describe('Update User Role', () => {
 
     const response = await updateUserRoleService.execute({
       userId: user.id,
-      roles: [UserRole.ADMIN],
+      role: [UserRole.ADMIN],
     });
 
     expect(response.user.updatedAt.getTime()).toBeGreaterThan(

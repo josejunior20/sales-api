@@ -6,7 +6,7 @@ import { UserRepository } from '../repositories/user-repository';
 
 interface UpdateUserRoleRequest {
   userId: string;
-  roles: UserRole[];
+  role: UserRole[];
 }
 
 interface UpdateUserRoleResponse {
@@ -18,13 +18,13 @@ export class UpdateUserRoleService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async execute({
-    roles,
+    role,
     userId,
   }: UpdateUserRoleRequest): Promise<UpdateUserRoleResponse> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw new UserNotFoundException();
 
-    user.roles = roles;
+    user.roles = role;
     user.updatedAt = new Date();
 
     await this.userRepository.save(user);
