@@ -1,5 +1,6 @@
-import { User } from '@modules/user/domain/entities/User';
+import { User, UserRole } from '@modules/user/domain/entities/User';
 import { User as RawUser } from 'generated/prisma/client';
+import { Role as PrismaRole } from 'generated/prisma/client';
 
 export class PrismaUserMapper {
   static toPrisma(user: User) {
@@ -8,8 +9,7 @@ export class PrismaUserMapper {
       name: user.name,
       email: user.email,
       password: user.password,
-      roles: user.roles,
-      createdAt: user.createdAt,
+      roles: user.roles.map(role => role as PrismaRole),
       updatedAt: user.updatedAt,
     };
   }
@@ -20,6 +20,9 @@ export class PrismaUserMapper {
         name: raw.name,
         email: raw.email,
         password: raw.password,
+        roles: raw.roles.map(role => role as UserRole),
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
       },
       raw.id,
     );
