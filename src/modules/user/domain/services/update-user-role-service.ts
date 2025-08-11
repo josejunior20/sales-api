@@ -24,7 +24,7 @@ export class UpdateUserRoleService {
     const user = await this.userRepository.findById(userId);
     if (!user) throw new UserNotFoundException();
 
-    user.roles = role;
+    user.roles = Array.from(new Set(role));
     user.updatedAt = new Date();
 
     await this.userRepository.save(user);
