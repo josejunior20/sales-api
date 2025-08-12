@@ -15,7 +15,7 @@ describe('Update User Role', () => {
   });
 
   it('should be able to update user roles', async () => {
-    const user = makeUser(); // Cria um usuário com role USER por padrão
+    const user = makeUser();
     await inMemoryUserRepository.create(user);
 
     const newRoles = [UserRole.ADMIN];

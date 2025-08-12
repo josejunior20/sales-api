@@ -1,13 +1,27 @@
 import { UserModule } from '@modules/user/user.module';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 
-import { AuthController } from './infra/controllers/auth.controller';
-import { ValidateUserService } from './services/validade-user.services';
-import { LocalStrategy } from './strategies/local.strategy';
+import { SignInService } from './domain/services/sign-in.service';
+import { ValidateUserService } from './domain/services/validade-user.service';
+import { JwtStrategy } from './domain/strategies/jwt.strategy';
+import { LocalStrategy } from './domain/strategies/local.strategy';
+import { AuthController } from './infra/http/controllers/auth.controller';
+import { SignInValidadeMiddleware } from './infra/http/middlewares/sign-in-validade.middleware';
 
 @Module({
   controllers: [AuthController],
-  imports: [UserModule],
-  providers: [LocalStrategy, ValidateUserService],
+  imports: [
+    UserModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRE },
+    }),
+  ],
+  providers: [LocalStrategy, JwtStrategy, ValidateUserService, SignInService],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(SignInValidadeMiddleware).forRoutes('sign-in');
+  }
+}

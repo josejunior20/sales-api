@@ -1,3 +1,4 @@
+import { SignInService } from '@modules/auth/domain/services/sign-in.service';
 import {
   Controller,
   HttpCode,
@@ -6,14 +7,22 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
-@Controller('signIn')
+import { Public } from '../../decorators/isPublic';
+import { LocalAuthGuard } from '../guards/local-auth.guard';
+import { AuthRequestModel } from '../models/auth-request.model';
+
+@Controller('auth')
 export class AuthController {
-  @Post()
+  constructor(private sigInService: SignInService) {}
+
+  @Post('sign-in')
+  @Public()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('local'))
-  async signIn(@Request() request: any) {
-    return request.user;
+  @UseGuards(LocalAuthGuard)
+  async signIn(@Request() request: AuthRequestModel) {
+    const acessToken = await this.sigInService.execute({ user: request.user });
+
+    return { acessToken };
   }
 }

@@ -16,6 +16,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      stopAtFirstError: true,
       exceptionFactory(errors: ValidationError[]) {
         throw new IncorrectValuesException({
           fields: mapperClassValidationErrorToAppException(errors),
