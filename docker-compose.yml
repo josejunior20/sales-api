@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres
+    container_name: coworking-project-db
+    restart: always
+    networks:
+      - coworking_project_network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USERNAME -d $DB_DATABASE"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: coworking-project-api
+  #   working_dir: /app
+  #   networks:
+  #     - coworking_project_network
+  #   ports:
+  #     - ${PORT}:${PORT}
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - DATABASE_URL=${DB_URL}
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   command: ["yarn", "start:swc"]
+
+networks:
+  coworking_project_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
