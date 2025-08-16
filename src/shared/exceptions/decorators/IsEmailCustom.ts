@@ -17,7 +17,11 @@ export function IsEmailCustom(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: string) {
-          return isEmail(value);
+          if (typeof value !== 'string') return false;
+
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          return emailRegex.test(value);
         },
         defaultMessage(validationArguments: ValidationArguments) {
           return ExceptionMessage.IsEmail(validationArguments.property);

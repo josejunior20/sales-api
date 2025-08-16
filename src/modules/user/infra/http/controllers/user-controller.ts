@@ -1,3 +1,4 @@
+import { Public } from '@modules/auth/infra/decorators/isPublic';
 import { CreateUserService } from '@modules/user/domain/services/create-user-service';
 import { DeleteUserService } from '@modules/user/domain/services/delete-user-service';
 import { GetUserService } from '@modules/user/domain/services/get-user-service';
@@ -34,6 +35,7 @@ export class UserController {
   ) {}
 
   @Post()
+  @Public()
   async create(@Body() { email, name, password }: CreateUserDto) {
     const { user } = await this.createUserService.execute({
       email,
