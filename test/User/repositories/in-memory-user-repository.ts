@@ -10,10 +10,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     const user = this.users.find(user => user.email === email);
-    if (!user) {
-      return null;
-    }
-    return user;
+    return user ?? null;
   }
 
   async findAll(): Promise<User[]> {
@@ -22,18 +19,14 @@ export class InMemoryUserRepository implements UserRepository {
 
   async findById(userId: string): Promise<User | null> {
     const user = this.users.find(user => user.id === userId);
-    if (!user) {
-      return null;
-    }
-    return user;
+
+    return user ?? null;
   }
 
   async save(user: User): Promise<void> {
     const index = this.users.findIndex(data => data.id === user.id);
-    if (index !== -1) {
+    if (index >= 0) {
       this.users[index] = user;
-    } else {
-      this.users.push(user);
     }
   }
   async delete(userId: string): Promise<void> {

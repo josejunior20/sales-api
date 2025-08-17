@@ -8,7 +8,7 @@ export interface CustomerProps {
   createdAt: Date;
   updatedAt: Date;
 }
-export class Customer {
+export abstract class Customer {
   private _id: string;
   private customerProps: CustomerProps;
 
@@ -36,6 +36,7 @@ export class Customer {
   }
   public set email(email: string) {
     this.customerProps.email = email;
+    this.update();
   }
 
   public get phone(): string {
@@ -43,6 +44,7 @@ export class Customer {
   }
   public set phone(phone: string) {
     this.customerProps.phone = phone;
+    this.update();
   }
 
   public get address(): string {
@@ -50,6 +52,7 @@ export class Customer {
   }
   public set address(address: string) {
     this.customerProps.address = address;
+    this.update();
   }
 
   public get createdAt(): Date {
@@ -59,7 +62,7 @@ export class Customer {
   public get updatedAt(): Date {
     return this.customerProps.updatedAt;
   }
-  public set updatedAt(updatedAt: Date) {
-    this.customerProps.updatedAt = updatedAt;
+  public update() {
+    this.customerProps.updatedAt = new Date();
   }
 }
