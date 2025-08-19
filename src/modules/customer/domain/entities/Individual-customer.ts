@@ -29,6 +29,7 @@ export class IndividualCustomer extends Customer {
   }
   public set name(name: string) {
     this.individualProps.name = name;
+    this.update();
   }
 
   public get cpf(): string {
@@ -36,5 +37,6 @@ export class IndividualCustomer extends Customer {
   }
   public set cpf(cpf: string) {
     this.individualProps.cpf = cpf;
+    this.update();
   }
 }

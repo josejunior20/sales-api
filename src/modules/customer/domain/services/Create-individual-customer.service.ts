@@ -1,7 +1,7 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { Injectable } from '@nestjs/common';
 
-import { CustomerRepository } from '../repositories/Customer.repositories';
+import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 import { IndividualCustomer } from './../entities/Individual-customer';
 
 interface CreateIndividualCustomerRequest {
@@ -17,7 +17,9 @@ interface CreateIndividualCustomerResponse {
 
 @Injectable()
 export class CreateIndividualCustomer {
-  constructor(private readonly customerRepository: CustomerRepository) {}
+  constructor(
+    private readonly customerRepository: IndividualCustomerRepository,
+  ) {}
 
   async execute({
     name,

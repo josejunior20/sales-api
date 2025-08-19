@@ -2,7 +2,7 @@ import { CustomerConflictException } from '@modules/customer/exceptions/customer
 import { Injectable } from '@nestjs/common';
 
 import { BusinessCustomer } from '../entities/Business-customer';
-import { CustomerRepository } from '../repositories/Customer.repositories';
+import { BusinessCustomerRepository } from '../repositories/Business-customer.repository';
 
 interface CreateBusinessCustomerRequest {
   companyName: string;
@@ -18,7 +18,9 @@ interface CreateBusinessCustomerResponse {
 }
 @Injectable()
 export class CreateBusinessCustomer {
-  constructor(private readonly customerRepository: CustomerRepository) {}
+  constructor(
+    private readonly customerRepository: BusinessCustomerRepository,
+  ) {}
 
   async execute({
     companyName,

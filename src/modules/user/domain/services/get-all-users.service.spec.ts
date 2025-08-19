@@ -12,7 +12,7 @@ describe('Get all users', () => {
     getAllUsersService = new GetAllUsersService(inMemoryUserRepository);
   });
 
-  it('Should be able to get many users', async () => {
+  it('should return all users from repository', async () => {
     const user1 = makeUser();
     const user2 = makeUser();
     const user3 = makeUser();
@@ -21,7 +21,7 @@ describe('Get all users', () => {
     const { users } = await getAllUsersService.execute();
 
     expect(users).toHaveLength(3);
-    expect(inMemoryUserRepository.users).toEqual(users);
+    expect(users).toEqual(expect.arrayContaining([user1, user2, user3]));
   });
 
   it('Should return an empty array if no users are found', async () => {

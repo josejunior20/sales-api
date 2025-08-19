@@ -1,16 +1,16 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { makeIndividualCustomer } from '@test/Customer/Individual-customer.factory';
-import { InMemoryCustomerRepository } from '@test/Customer/repositories/in-memory-customer.repository';
+import { InMemoryIndividualCustomerRepository } from '@test/Customer/repositories/in-memory-individual-customer.repository';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
 import { CreateIndividualCustomer } from './Create-individual-customer.service';
 
 let createIndividualCustomer: CreateIndividualCustomer;
-let inMemoryCustomerRepository: InMemoryCustomerRepository;
+let inMemoryCustomerRepository: InMemoryIndividualCustomerRepository;
 
 describe('Create Individual Customer', () => {
   beforeEach(() => {
-    inMemoryCustomerRepository = new InMemoryCustomerRepository();
+    inMemoryCustomerRepository = new InMemoryIndividualCustomerRepository();
     createIndividualCustomer = new CreateIndividualCustomer(
       inMemoryCustomerRepository,
     );

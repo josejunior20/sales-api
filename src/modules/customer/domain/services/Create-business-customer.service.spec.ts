@@ -1,16 +1,16 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { makeBusinessCustomer } from '@test/Customer/Business-customer.factory';
-import { InMemoryCustomerRepository } from '@test/Customer/repositories/in-memory-customer.repository';
+import { InMemoryBusinessCustomerRepository } from '@test/Customer/repositories/in-memory-business-customer.repository';
 
 import { BusinessCustomer } from '../entities/Business-customer';
 import { CreateBusinessCustomer } from './Create-business-customer.service';
 
 let createBusinessCustomer: CreateBusinessCustomer;
-let inMemoryCustomerRepository: InMemoryCustomerRepository;
+let inMemoryCustomerRepository: InMemoryBusinessCustomerRepository;
 
 describe(' Create Business customer', () => {
   beforeEach(() => {
-    inMemoryCustomerRepository = new InMemoryCustomerRepository();
+    inMemoryCustomerRepository = new InMemoryBusinessCustomerRepository();
     createBusinessCustomer = new CreateBusinessCustomer(
       inMemoryCustomerRepository,
     );

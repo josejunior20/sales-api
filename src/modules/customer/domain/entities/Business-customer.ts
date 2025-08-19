@@ -32,6 +32,7 @@ export class BusinessCustomer extends Customer {
   }
   public set companyName(companyName: string) {
     this.businessCustomerProps.companyName = companyName;
+    this.update();
   }
 
   public get tradeName(): string {
@@ -39,6 +40,7 @@ export class BusinessCustomer extends Customer {
   }
   public set tradeName(tradeName: string) {
     this.businessCustomerProps.tradeName = tradeName;
+    this.update();
   }
 
   public get cnpj(): string {
@@ -46,5 +48,6 @@ export class BusinessCustomer extends Customer {
   }
   public set cnpj(cnpj: string) {
     this.businessCustomerProps.cnpj = cnpj;
+    this.update();
   }
 }
