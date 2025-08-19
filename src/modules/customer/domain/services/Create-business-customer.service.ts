@@ -1,40 +1,43 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { Injectable } from '@nestjs/common';
 
+import { BusinessCustomer } from '../entities/Business-customer';
 import { CustomerRepository } from '../repositories/Customer.repositories';
-import { IndividualCustomer } from './../entities/Individual-customer';
 
-interface CreateIndividualCustomerRequest {
-  name: string;
-  cpf: string;
+interface CreateBusinessCustomerRequest {
+  companyName: string;
+  tradeName: string;
+  cnpj: string;
   email: string;
   phone: string;
   address: string;
 }
-interface CreateIndividualCustomerResponse {
-  customer: IndividualCustomer;
-}
 
+interface CreateBusinessCustomerResponse {
+  customer: BusinessCustomer;
+}
 @Injectable()
-export class CreateIndividualCustomer {
+export class CreateBusinessCustomer {
   constructor(private readonly customerRepository: CustomerRepository) {}
 
   async execute({
-    name,
-    cpf,
+    companyName,
+    tradeName,
+    cnpj,
     email,
     phone,
     address,
-  }: CreateIndividualCustomerRequest): Promise<CreateIndividualCustomerResponse> {
-    const customerAlreadExists = await this.customerRepository.findByCpf(cpf);
+  }: CreateBusinessCustomerRequest): Promise<CreateBusinessCustomerResponse> {
+    const customerAlreadExists = await this.customerRepository.findByCnpj(cnpj);
     if (customerAlreadExists) throw new CustomerConflictException();
 
-    const customer = new IndividualCustomer({
+    const customer = new BusinessCustomer({
       address,
-      cpf,
+      cnpj,
+      companyName,
       email,
-      name,
       phone,
+      tradeName,
     });
 
     await this.customerRepository.create(customer);
