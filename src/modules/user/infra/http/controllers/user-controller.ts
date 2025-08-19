@@ -1,8 +1,8 @@
 import { Public } from '@modules/auth/infra/decorators/isPublic';
 import { CreateUserService } from '@modules/user/domain/services/create-user-service';
 import { DeleteUserService } from '@modules/user/domain/services/delete-user-service';
+import { GetAllUsersService } from '@modules/user/domain/services/get-all-users.service';
 import { GetUserService } from '@modules/user/domain/services/get-user-service';
-import { ShowAllUsersService } from '@modules/user/domain/services/show-all-users-service';
 import { UpdateUserRoleService } from '@modules/user/domain/services/update-user-role-service';
 import { UpdateUserService } from '@modules/user/domain/services/update-user-service';
 import {
@@ -27,7 +27,7 @@ import { UserViewModel } from '../view-models/user-view-model';
 export class UserController {
   constructor(
     private readonly createUserService: CreateUserService,
-    private readonly listUsersService: ShowAllUsersService,
+    private readonly listUsersService: GetAllUsersService,
     private readonly getUserService: GetUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly deleteUserService: DeleteUserService,
