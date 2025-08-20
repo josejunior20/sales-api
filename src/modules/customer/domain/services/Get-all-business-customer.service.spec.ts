@@ -1,4 +1,3 @@
-import { Customer } from '@modules/customer/domain/entities/Customer';
 import { makeBusinessCustomer } from '@test/Customer/Business-customer.factory';
 import { InMemoryBusinessCustomerRepository } from '@test/Customer/repositories/in-memory-business-customer.repository';
 
