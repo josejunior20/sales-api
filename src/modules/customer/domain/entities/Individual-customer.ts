@@ -1,10 +1,11 @@
+import { InvalidCustomerNameException } from '@modules/customer/exceptions/Invalid-customer-name.exception';
 import { Replace } from '@shared/helpers/replace';
 
 import { Customer, CustomerProps } from './Customer';
 
 export interface IndividualCustomerProps {
   name: string;
-  cpf: string;
+  readonly cpf: string;
 }
 
 export class IndividualCustomer extends Customer {
@@ -28,15 +29,14 @@ export class IndividualCustomer extends Customer {
     return this.individualProps.name;
   }
   public set name(name: string) {
+    if (!name || name.trim().length === 0) {
+      throw new InvalidCustomerNameException();
+    }
     this.individualProps.name = name;
     this.update();
   }
 
   public get cpf(): string {
     return this.individualProps.cpf;
-  }
-  public set cpf(cpf: string) {
-    this.individualProps.cpf = cpf;
-    this.update();
   }
 }
