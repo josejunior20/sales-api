@@ -1,5 +1,7 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { Injectable } from '@nestjs/common';
+import { Email } from '@shared/domain/values-objects/email.value-object';
+import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 import { IndividualCustomer } from './../entities/Individual-customer';
@@ -7,8 +9,8 @@ import { IndividualCustomer } from './../entities/Individual-customer';
 interface CreateIndividualCustomerRequest {
   name: string;
   cpf: string;
-  email: string;
-  phone: string;
+  email: Email;
+  phone: Phone;
   address: string;
 }
 interface CreateIndividualCustomerResponse {

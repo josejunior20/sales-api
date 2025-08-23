@@ -15,11 +15,10 @@ export class IndividualCustomer extends Customer {
   constructor(
     props: Replace<
       CustomerProps & IndividualCustomerProps,
-      { createdAt?: Date; updatedAt?: Date }
+      { id?: string; createdAt?: Date; updatedAt?: Date }
     >,
-    id?: string,
   ) {
-    super(props, id);
+    super(props);
     this.individualProps = {
       name: props.name,
       cpf: props.cpf,
@@ -29,7 +28,7 @@ export class IndividualCustomer extends Customer {
   public get name(): string {
     return this.individualProps.name;
   }
-  public set name(name: string) {
+  protected updateName(name: string) {
     if (!name || name.trim().length === 0) {
       throw new InvalidCustomerNameException();
     }
@@ -40,16 +39,13 @@ export class IndividualCustomer extends Customer {
     return this.individualProps.cpf;
   }
 
-  public updateProfile({
-    name,
-    email,
-    phone,
-    address,
-  }: Replace<UpdateIndividualCustomerRequest, 'customerId' | 'cpf'>): void {
-    this.name = name;
-    this.email = email;
-    this.phone = phone;
-    this.address = address;
-    this.update();
+  public updateProfile(
+    props: Partial<Pick<UpdateIndividualCustomerRequest, 'customerId'>> &
+      Omit<UpdateIndividualCustomerRequest, 'customerId'>,
+  ): void {
+    this.updateName(props.name);
+    this.updateEmail(props.email);
+    this.updatePhone(props.phone);
+    this.updateAddress(props.address);
   }
 }

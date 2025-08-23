@@ -1,5 +1,7 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
 import { Injectable } from '@nestjs/common';
+import { Email } from '@shared/domain/values-objects/email.value-object';
+import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
 import { BusinessCustomer } from '../entities/Business-customer';
 import { BusinessCustomerRepository } from '../repositories/Business-customer.repository';
@@ -8,8 +10,8 @@ interface CreateBusinessCustomerRequest {
   companyName: string;
   tradeName: string;
   cnpj: string;
-  email: string;
-  phone: string;
+  email: Email;
+  phone: Phone;
   address: string;
 }
 

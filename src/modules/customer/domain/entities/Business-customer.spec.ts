@@ -6,18 +6,18 @@ describe('Business Customer entity', () => {
 
     expect(customer.companyName).toBe('jhon.doe.me');
     expect(customer.tradeName).toBe('Super e-commerce');
-    expect(customer.cnpj).toBe('123.456.789-00');
+    expect(customer.cnpj).toBe('12.456.789/0000-00');
   });
 
   it('should allow overriding values', () => {
     const customer = makeBusinessCustomer({
       companyName: 'teste.me',
       tradeName: 'myBooks livraria',
-      cnpj: '124.589.631-20',
+      cnpj: '12.589.631/0000-20',
     });
 
     expect(customer.companyName).toBe('teste.me');
     expect(customer.tradeName).toBe('myBooks livraria');
-    expect(customer.cnpj).toBe('124.589.631-20');
+    expect(customer.cnpj).toBe('12.589.631/0000-20');
   });
 });

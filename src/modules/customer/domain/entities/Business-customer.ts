@@ -14,11 +14,10 @@ export class BusinessCustomer extends Customer {
   constructor(
     props: Replace<
       BusinessCustomerProps & CustomerProps,
-      { createdAt?: Date; updatedAt?: Date }
+      { id?: string; createdAt?: Date; updatedAt?: Date }
     >,
-    id?: string,
   ) {
-    super(props, id);
+    super(props);
 
     this.businessCustomerProps = {
       companyName: props.companyName,
@@ -30,24 +29,26 @@ export class BusinessCustomer extends Customer {
   public get companyName(): string {
     return this.businessCustomerProps.companyName;
   }
-  public set companyName(companyName: string) {
+  protected updateCompanyName(companyName: string) {
     this.businessCustomerProps.companyName = companyName;
-    this.update();
+    this.touch();
   }
 
   public get tradeName(): string {
     return this.businessCustomerProps.tradeName;
   }
-  public set tradeName(tradeName: string) {
+  protected updateTradeName(tradeName: string) {
     this.businessCustomerProps.tradeName = tradeName;
-    this.update();
+    this.touch();
   }
 
   public get cnpj(): string {
-    return this.businessCustomerProps.cnpj;
-  }
-  public set cnpj(cnpj: string) {
-    this.businessCustomerProps.cnpj = cnpj;
-    this.update();
+    const cnpj = this.businessCustomerProps.cnpj.replace(/\D/g, ''); // remove tudo que não é número
+    if (cnpj.length !== 14) return cnpj; // caso não seja válido, retorna como está
+
+    return cnpj.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+      '$1.$2.$3/$4-$5',
+    );
   }
 }

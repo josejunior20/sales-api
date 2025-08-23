@@ -1,4 +1,6 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
+import { Email } from '@shared/domain/values-objects/email.value-object';
+import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
@@ -6,9 +8,8 @@ import { IndividualCustomerRepository } from '../repositories/Individual-custome
 export interface UpdateIndividualCustomerRequest {
   customerId: string;
   name: string;
-  cpf: string;
-  email: string;
-  phone: string;
+  email: Email;
+  phone: Phone;
   address: string;
 }
 
@@ -23,7 +24,6 @@ export class UpdateIndividualCustomerService {
   async execute({
     customerId,
     name,
-    cpf,
     email,
     phone,
     address,
@@ -33,10 +33,7 @@ export class UpdateIndividualCustomerService {
     );
     if (!customer) throw new CustomerNotFoundException();
 
-    customer.name = name;
-    customer.email = email;
-    customer.phone = phone;
-    customer.address = address;
+    customer.updateProfile({ name, address, phone, email });
 
     await this.individualCustomerRepository.save(customer);
     return { customer };
