@@ -1,6 +1,7 @@
 import { InvalidCustomerNameException } from '@modules/customer/exceptions/Invalid-customer-name.exception';
 import { Replace } from '@shared/helpers/replace';
 
+import { UpdateIndividualCustomerRequest } from '../services/update-individul-customer.service';
 import { Customer, CustomerProps } from './Customer';
 
 export interface IndividualCustomerProps {
@@ -33,10 +34,22 @@ export class IndividualCustomer extends Customer {
       throw new InvalidCustomerNameException();
     }
     this.individualProps.name = name;
-    this.update();
   }
 
   public get cpf(): string {
     return this.individualProps.cpf;
+  }
+
+  public updateProfile({
+    name,
+    email,
+    phone,
+    address,
+  }: Replace<UpdateIndividualCustomerRequest, 'customerId' | 'cpf'>): void {
+    this.name = name;
+    this.email = email;
+    this.phone = phone;
+    this.address = address;
+    this.update();
   }
 }

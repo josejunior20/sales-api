@@ -3,7 +3,7 @@ import { CustomerNotFoundException } from '@modules/customer/exceptions/customer
 import { IndividualCustomer } from '../entities/Individual-customer';
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 
-interface UpdateIndividualCustomerRequest {
+export interface UpdateIndividualCustomerRequest {
   customerId: string;
   name: string;
   cpf: string;
