@@ -4,13 +4,14 @@ import { UserRepository } from '@modules/user/domain/repositories/user-repositor
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
 import { Injectable } from '@nestjs/common';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 
-interface ValidadeUserRequest {
-  email: string;
+interface ValidateUserRequest {
+  email: Email;
   password: string;
 }
 
-interface ValidadeUserResponse {
+interface ValidateUserResponse {
   user: User;
 }
 
@@ -24,7 +25,7 @@ export class ValidateUserService {
   async execute({
     email,
     password,
-  }: ValidadeUserRequest): Promise<ValidadeUserResponse> {
+  }: ValidateUserRequest): Promise<ValidateUserResponse> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) throw new UserNotFoundException();
 

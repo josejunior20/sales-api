@@ -1,14 +1,17 @@
-import { ValidateUserService } from '@modules/user/domain/services/validade-user-service';
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
+import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
+
+import { ValidateUserService } from './validate-user.service';
 
 let validateUserService: ValidateUserService;
 let inMemoryUserRepository: InMemoryUserRepository;
 let encryptedPassword: FakeHashRepository;
 
-describe('Validade User', () => {
+describe('Validate User', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository();
     encryptedPassword = new FakeHashRepository();
@@ -42,10 +45,10 @@ describe('Validade User', () => {
 
     await expect(
       validateUserService.execute({
-        email: 'invalid@example.com',
+        email: new Email('invalid@example.com'),
         password: 'Teste123',
       }),
-    ).rejects.toThrow(AuthIncorrectExceptions);
+    ).rejects.toThrow(UserNotFoundException);
   });
 
   it('should throw error when password is incorrect', async () => {

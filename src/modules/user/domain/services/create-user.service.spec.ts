@@ -3,7 +3,7 @@ import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-re
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
-import { CreateUserService } from './create-user-service';
+import { CreateUserService } from './create-user.service';
 
 let createUserService: CreateUserService;
 let encryptedPassword: FakeHashRepository;

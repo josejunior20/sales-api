@@ -20,7 +20,7 @@ describe('sign in', () => {
     const payload = jwtService.decode(token) as UserPayload;
 
     expect(payload.sub).toBe(user.id);
-    expect(payload.email).toBe(user.email);
+    expect(payload.email).toEqual(user.email);
     expect(payload.name).toBe(user.name);
     expect(payload.createdAt).toBe(user.createdAt.toJSON());
   });

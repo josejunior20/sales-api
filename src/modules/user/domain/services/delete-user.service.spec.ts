@@ -2,7 +2,7 @@ import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-e
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
-import { DeleteUserService } from './delete-user-service';
+import { DeleteUserService } from './delete-user.service';
 
 let inMemoryUserRepository: InMemoryUserRepository;
 let deleteUserService: DeleteUserService;
