@@ -1,9 +1,10 @@
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
-import { ValidateUserService } from './validade-user-service';
+import { ValidateUserService } from './validade-user.service';
 
 let validateUserService: ValidateUserService;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -41,7 +42,7 @@ describe('Validate User', () => {
 
     await expect(
       validateUserService.execute({
-        email: 'incorrect email',
+        email: new Email('incorrect@email.com'),
         password: userPasswordEncryption,
       }),
     ).rejects.toThrow(AuthIncorrectExceptions);

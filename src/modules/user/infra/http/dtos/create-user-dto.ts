@@ -1,3 +1,4 @@
+import { Email } from '@shared/domain/values-objects/email.value-object';
 import { IsEmailCustom } from '@shared/exceptions/decorators/IsEmailCustom';
 import { IsNotEmptyCustom } from '@shared/exceptions/decorators/IsNotEmptyCustom';
 import { IsStringCustom } from '@shared/exceptions/decorators/IsStringCustom';
@@ -11,7 +12,7 @@ export class CreateUserDto {
   @IsNotEmptyCustom()
   @IsStringCustom()
   @IsEmailCustom()
-  email: string;
+  email: Email;
 
   @IsNotEmptyCustom()
   @MinLengthCustom(6)

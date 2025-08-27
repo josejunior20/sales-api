@@ -7,7 +7,7 @@ import { NextFunction, Request, Response } from 'express';
 import { SignInDto } from '../dtos/sign-in.dto';
 
 @Injectable()
-export class SignInValidadeMiddleware implements NestMiddleware {
+export class SignInValidateMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
 

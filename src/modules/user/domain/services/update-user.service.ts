@@ -3,17 +3,18 @@ import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-e
 import { UserPasswordNotMatchException } from '@modules/user/exceptions/user-password-not-match-exception';
 import { UserPasswordRequiredException } from '@modules/user/exceptions/user-password-required-exception';
 import { Injectable } from '@nestjs/common';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 
 import { User } from '../entities/User';
 import { HashPasswordRepository } from '../repositories/hash-password-repository';
 import { UserRepository } from '../repositories/user-repository';
 
-interface UpdateUserRequest {
+export interface UpdateUserRequest {
   userId: string;
-  name: string;
-  email: string;
-  password: string;
-  oldPassword: string;
+  name?: string;
+  email?: Email;
+  password?: string;
+  oldPassword?: string;
 }
 
 interface UpdateUserResponse {
@@ -49,13 +50,13 @@ export class UpdateUserService {
         user.password,
       );
       if (!validOldPassword) throw new UserPasswordNotMatchException();
-
-      user.password = await this.hashPassword.generateHash(password);
+      const newHashPassword = await this.hashPassword.generateHash(password);
+      user.updateProfile({ password: newHashPassword });
     }
-
-    user.name = name;
-    user.email = email;
-    user.updatedAt = new Date();
+    user.updateProfile({
+      name,
+      email,
+    });
 
     await this.userRepository.save(user);
     return { user };

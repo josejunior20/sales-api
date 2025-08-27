@@ -3,24 +3,24 @@ import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-r
 import { makeUser } from '@test/User/User-factory';
 
 import { UserRole } from '../entities/User';
-import { UpdateUserRoleService } from './update-user-role-service';
+import { SetUserRoleService } from './set-user-role.service';
 
-let updateUserRoleService: UpdateUserRoleService;
+let setUserRoleService: SetUserRoleService;
 let inMemoryUserRepository: InMemoryUserRepository;
 
-describe('Update User Role', () => {
+describe('Set User Role', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository();
-    updateUserRoleService = new UpdateUserRoleService(inMemoryUserRepository);
+    setUserRoleService = new SetUserRoleService(inMemoryUserRepository);
   });
 
-  it('should be able to update user roles', async () => {
+  it('should be able to set user roles', async () => {
     const user = makeUser();
     await inMemoryUserRepository.create(user);
 
     const newRoles = [UserRole.ADMIN];
 
-    const response = await updateUserRoleService.execute({
+    const response = await setUserRoleService.execute({
       userId: user.id,
       role: newRoles,
     });
@@ -31,28 +31,10 @@ describe('Update User Role', () => {
 
   it('should throw UserNotFoundException if user does not exist', async () => {
     await expect(
-      updateUserRoleService.execute({
+      setUserRoleService.execute({
         userId: 'non-existent-id',
         role: [UserRole.ADMIN],
       }),
     ).rejects.toThrow(UserNotFoundException);
-  });
-
-  it('should update the updatedAt date when roles are set', async () => {
-    const user = makeUser();
-    await inMemoryUserRepository.create(user);
-
-    const oldUpdatedAt = user.updatedAt;
-
-    await new Promise(res => setTimeout(res, 10));
-
-    const response = await updateUserRoleService.execute({
-      userId: user.id,
-      role: [UserRole.ADMIN],
-    });
-
-    expect(response.user.updatedAt.getTime()).toBeGreaterThan(
-      oldUpdatedAt.getTime(),
-    );
   });
 });

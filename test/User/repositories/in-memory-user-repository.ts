@@ -1,5 +1,6 @@
 import { User } from '@modules/user/domain/entities/User';
 import { UserRepository } from '@modules/user/domain/repositories/user-repository';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 
 export class InMemoryUserRepository implements UserRepository {
   public users: User[] = [];
@@ -8,8 +9,10 @@ export class InMemoryUserRepository implements UserRepository {
     this.users.push(user);
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    const user = this.users.find(user => user.email === email);
+  async findByEmail(email: Email): Promise<User | null> {
+    const user = this.users.find(
+      user => user.email.getValue() === email.getValue(),
+    );
     return user ?? null;
   }
 

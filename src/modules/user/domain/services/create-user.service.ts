@@ -1,5 +1,6 @@
 import { UserConflictException } from '@modules/user/exceptions/user-conflict-exception';
 import { Injectable } from '@nestjs/common';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 
 import { User } from '../entities/User';
 import { HashPasswordRepository } from '../repositories/hash-password-repository';
@@ -7,7 +8,7 @@ import { UserRepository } from '../repositories/user-repository';
 
 interface CreateUserRequest {
   name: string;
-  email: string;
+  email: Email;
   password: string;
 }
 

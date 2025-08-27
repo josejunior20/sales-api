@@ -3,12 +3,11 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { SignInService } from './domain/services/sign-in.service';
-import { ValidateUserService } from './domain/services/validade-user.service';
+import { ValidateUserService } from './domain/services/validate-user.service';
 import { JwtStrategy } from './domain/strategies/jwt.strategy';
 import { LocalStrategy } from './domain/strategies/local.strategy';
 import { AuthController } from './infra/http/controllers/auth.controller';
-import { SignInValidadeMiddleware } from './infra/http/middlewares/sign-in-validade.middleware';
-
+import { SignInValidateMiddleware } from './infra/http/middlewares/sign-in-validate.middleware';
 @Module({
   controllers: [AuthController],
   imports: [
@@ -22,6 +21,6 @@ import { SignInValidadeMiddleware } from './infra/http/middlewares/sign-in-valid
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(SignInValidadeMiddleware).forRoutes('sign-in');
+    consumer.apply(SignInValidateMiddleware).forRoutes('sign-in');
   }
 }

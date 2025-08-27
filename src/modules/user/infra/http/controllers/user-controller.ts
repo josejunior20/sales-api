@@ -1,10 +1,10 @@
 import { Public } from '@modules/auth/infra/decorators/isPublic';
-import { CreateUserService } from '@modules/user/domain/services/create-user-service';
-import { DeleteUserService } from '@modules/user/domain/services/delete-user-service';
+import { CreateUserService } from '@modules/user/domain/services/create-user.service';
+import { DeleteUserService } from '@modules/user/domain/services/delete-user.service';
 import { GetAllUsersService } from '@modules/user/domain/services/get-all-users.service';
-import { GetUserService } from '@modules/user/domain/services/get-user-service';
-import { UpdateUserRoleService } from '@modules/user/domain/services/update-user-role-service';
-import { UpdateUserService } from '@modules/user/domain/services/update-user-service';
+import { GetUserService } from '@modules/user/domain/services/get-user.service';
+import { SetUserRoleService } from '@modules/user/domain/services/set-user-role.service';
+import { UpdateUserService } from '@modules/user/domain/services/update-user.service';
 import {
   Body,
   Controller,
@@ -19,8 +19,8 @@ import {
 import { CustomUUIDPipe } from '@shared/pipes/custom-uuid.pipe';
 
 import { CreateUserDto } from '../dtos/create-user-dto';
+import { SetUserRoleDto } from '../dtos/set-user-role-dto';
 import { UpdateUserDto } from '../dtos/update-user-dto';
-import { UpdateUserRoleDto } from '../dtos/update-user-role-dto';
 import { UserViewModel } from '../view-models/user-view-model';
 
 @Controller('users')
@@ -31,7 +31,7 @@ export class UserController {
     private readonly getUserService: GetUserService,
     private readonly updateUserService: UpdateUserService,
     private readonly deleteUserService: DeleteUserService,
-    private readonly updateUserRoleService: UpdateUserRoleService,
+    private readonly setUserRoleService: SetUserRoleService,
   ) {}
 
   @Post()
@@ -86,9 +86,9 @@ export class UserController {
   @HttpCode(200)
   async updateUserRole(
     @Param('id', CustomUUIDPipe) userId: string,
-    @Body() { role }: UpdateUserRoleDto,
+    @Body() { role }: SetUserRoleDto,
   ) {
-    await this.updateUserRoleService.execute({ role, userId });
+    await this.setUserRoleService.execute({ role, userId });
     return { message: 'User role updated successfully' };
   }
 }

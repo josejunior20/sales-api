@@ -1,5 +1,7 @@
+import { Email } from '@shared/domain/values-objects/email.value-object';
+
 export interface UserPayload {
-  email: string;
+  email: Email;
   sub: string;
   name: string;
   createdAt: string;

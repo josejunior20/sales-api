@@ -32,8 +32,10 @@ export class CreateBusinessCustomer {
     phone,
     address,
   }: CreateBusinessCustomerRequest): Promise<CreateBusinessCustomerResponse> {
-    const customerAlreadExists = await this.customerRepository.findByCnpj(cnpj);
-    if (customerAlreadExists) throw new CustomerConflictException();
+    const customerAlreadyExists = await this.customerRepository.findByCnpj(
+      cnpj,
+    );
+    if (customerAlreadyExists) throw new CustomerConflictException();
 
     const customer = new BusinessCustomer({
       address,

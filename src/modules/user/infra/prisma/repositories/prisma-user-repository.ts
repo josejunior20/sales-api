@@ -2,6 +2,7 @@ import { User } from '@modules/user/domain/entities/User';
 import { UserRepository } from '@modules/user/domain/repositories/user-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/database/prisma-service';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 
@@ -33,11 +34,9 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: Email): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
+      where: { email: email.getValue() },
     });
     if (!user) return null;
 

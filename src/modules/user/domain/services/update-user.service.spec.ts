@@ -2,11 +2,12 @@ import { UserConflictException } from '@modules/user/exceptions/user-conflict-ex
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
 import { UserPasswordNotMatchException } from '@modules/user/exceptions/user-password-not-match-exception';
 import { UserPasswordRequiredException } from '@modules/user/exceptions/user-password-required-exception';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
 
-import { UpdateUserService } from './update-user-service';
+import { UpdateUserService } from './update-user.service';
 
 let updateUserService: UpdateUserService;
 let inMemoryUserRepository: InMemoryUserRepository;
@@ -46,7 +47,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: 'non-existent-id',
         name: 'teste',
-        email: 'email@example.com',
+        email: new Email('email@example.com'),
         oldPassword: '123',
         password: '456',
       }),
@@ -56,11 +57,11 @@ describe('Update a user', () => {
   it('Should be able to check if email is already in use by another user', async () => {
     const userPasswordWithoutEncryption = 'Teste123';
     const user1 = makeUser({
-      email: 'email1@example.com',
+      email: new Email('email@example.com'),
       password: await hashPassword.generateHash(userPasswordWithoutEncryption),
     });
     const user2 = makeUser({
-      email: 'email2@example.com',
+      email: new Email('email02@example.com'),
       password: await hashPassword.generateHash(userPasswordWithoutEncryption),
     });
     inMemoryUserRepository.users = [user1, user2];
@@ -69,7 +70,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user1.id,
         name: 'teste',
-        email: 'email2@example.com',
+        email: user2.email,
         oldPassword: 'Teste123',
         password: '123Test',
       }),
@@ -86,7 +87,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user.id,
         name: 'teste',
-        email: 'email@example.com',
+        email: new Email('email@example.com'),
         oldPassword: '',
         password: '123Test',
       }),
@@ -103,7 +104,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user.id,
         name: 'teste',
-        email: 'email@example.com',
+        email: new Email('email@example.com'),
         oldPassword: 'wrongPassword',
         password: '123Test',
       }),
