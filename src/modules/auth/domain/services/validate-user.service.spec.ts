@@ -1,6 +1,5 @@
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
-import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';

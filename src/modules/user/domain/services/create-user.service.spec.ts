@@ -1,5 +1,4 @@
 import { UserConflictException } from '@modules/user/exceptions/user-conflict-exception';
-import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
