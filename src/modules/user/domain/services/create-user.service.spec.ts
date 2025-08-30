@@ -1,4 +1,5 @@
 import { UserConflictException } from '@modules/user/exceptions/user-conflict-exception';
+import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
@@ -6,40 +7,48 @@ import { makeUser } from '@test/User/User-factory';
 import { CreateUserService } from './create-user.service';
 
 let createUserService: CreateUserService;
-let encryptedPassword: FakeHashRepository;
 let inMemoryUserRepository: InMemoryUserRepository;
+let fakeHashRepository: FakeHashRepository;
 
-describe('Create User', () => {
+describe('CreateUserService', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository();
-    encryptedPassword = new FakeHashRepository();
+    fakeHashRepository = new FakeHashRepository();
     createUserService = new CreateUserService(
       inMemoryUserRepository,
-      encryptedPassword,
+      fakeHashRepository,
     );
   });
 
   it('Should be able to create user with password encrypted', async () => {
-    const userPasswordWithoutEncryption = 'Teste123';
+    const plainPassword = 'Teste123';
 
-    const user = await createUserService.execute(
-      makeUser({ password: userPasswordWithoutEncryption }),
+    const { user } = await createUserService.execute({
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: plainPassword,
+    });
+
+    const isPasswordEncrypted = await fakeHashRepository.compareHash(
+      plainPassword,
+      user.password,
     );
 
-    const userHasPasswordEncrypted = await encryptedPassword.compareHash(
-      userPasswordWithoutEncryption,
-      user.user.password,
-    );
-    expect(userHasPasswordEncrypted).toBeTruthy();
+    expect(isPasswordEncrypted).toBe(true);
   });
 
-  it('Should be able to throw error when create user with already exist email', () => {
+  it('Should throw error when creating user with an already existing email', async () => {
     const user = makeUser();
+    inMemoryUserRepository.users.push(user);
 
-    inMemoryUserRepository.users = [user];
+    const newUser = {
+      name: 'Jane Doe',
+      email: 'johndoe@mail.com',
+      password: 'AnotherPass123',
+    };
 
-    expect(
-      async () => await createUserService.execute(makeUser()),
-    ).rejects.toThrow(UserConflictException);
+    await expect(createUserService.execute(newUser)).rejects.toThrow(
+      UserConflictException,
+    );
   });
 });

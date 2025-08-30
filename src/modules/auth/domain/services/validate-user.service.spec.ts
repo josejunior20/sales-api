@@ -30,7 +30,7 @@ describe('Validate User', () => {
     inMemoryUserRepository.users = [user];
 
     const result = await validateUserService.execute({
-      email: user.email,
+      email: user.email.getValue(),
       password: plaintextPassword,
     });
 
@@ -45,7 +45,7 @@ describe('Validate User', () => {
 
     await expect(
       validateUserService.execute({
-        email: new Email('invalid@example.com'),
+        email: 'invalid@example.com',
         password: 'Teste123',
       }),
     ).rejects.toThrow(UserNotFoundException);
@@ -59,7 +59,7 @@ describe('Validate User', () => {
 
     await expect(
       validateUserService.execute({
-        email: user.email,
+        email: user.email.getValue(),
         password: 'WrongPassword',
       }),
     ).rejects.toThrow(AuthIncorrectExceptions);

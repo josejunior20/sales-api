@@ -33,7 +33,7 @@ describe('Update a user', () => {
     const userUpdate = await updateUserService.execute({
       userId: user.id,
       name: 'teste',
-      email: user.email,
+      email: user.email.getValue(),
       oldPassword: 'Teste123',
       password: '123Test',
     });
@@ -47,7 +47,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: 'non-existent-id',
         name: 'teste',
-        email: new Email('email@example.com'),
+        email: 'email@example.com',
         oldPassword: '123',
         password: '456',
       }),
@@ -70,7 +70,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user1.id,
         name: 'teste',
-        email: user2.email,
+        email: user2.email.getValue(),
         oldPassword: 'Teste123',
         password: '123Test',
       }),
@@ -87,7 +87,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user.id,
         name: 'teste',
-        email: new Email('email@example.com'),
+        email: 'email@example.com',
         oldPassword: '',
         password: '123Test',
       }),
@@ -104,7 +104,7 @@ describe('Update a user', () => {
       updateUserService.execute({
         userId: user.id,
         name: 'teste',
-        email: new Email('email@example.com'),
+        email: 'email@example.com',
         oldPassword: 'wrongPassword',
         password: '123Test',
       }),

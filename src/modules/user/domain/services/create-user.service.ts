@@ -8,7 +8,7 @@ import { UserRepository } from '../repositories/user-repository';
 
 interface CreateUserRequest {
   name: string;
-  email: Email;
+  email: string;
   password: string;
 }
 
@@ -34,7 +34,11 @@ export class CreateUserService {
     }
 
     const encryptedPassword = await this.hashPassword.generateHash(password);
-    const user = new User({ email, name, password: encryptedPassword });
+    const user = new User({
+      email: new Email(email),
+      name,
+      password: encryptedPassword,
+    });
 
     await this.userRepository.create(user);
     return { user };
