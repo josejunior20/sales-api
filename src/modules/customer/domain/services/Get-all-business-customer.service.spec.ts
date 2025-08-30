@@ -6,7 +6,7 @@ import { GetAllBusinessCustomerService } from './Get-all-business-customer.servi
 let inMemoryBusinessCustomerRepository: InMemoryBusinessCustomerRepository;
 let getAllBusinessCustomerService: GetAllBusinessCustomerService;
 
-describe('Get all Business customer', () => {
+describe('Get all Business Customers (with pagination)', () => {
   beforeEach(() => {
     inMemoryBusinessCustomerRepository =
       new InMemoryBusinessCustomerRepository();
@@ -15,31 +15,75 @@ describe('Get all Business customer', () => {
     );
   });
 
-  it('should return all persisted business customers', async () => {
-    const customer01 = makeBusinessCustomer();
-    const customer02 = makeBusinessCustomer({ cnpj: '1245253678-1' });
-    const customer03 = makeBusinessCustomer({ cnpj: '4585253678-1' });
-    const customer04 = makeBusinessCustomer({ cnpj: '7895253678-1' });
+  it('Should return all persisted business customers when no pagination params are given (default)', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryBusinessCustomerRepository.customers.push(
+        makeBusinessCustomer({ cnpj: `CNPJ-${i}` }),
+      );
+    }
 
-    inMemoryBusinessCustomerRepository.customers = [
-      customer01,
-      customer02,
-      customer03,
-      customer04,
-    ];
+    const result = await getAllBusinessCustomerService.execute(1, 10);
 
-    const { customers } = await getAllBusinessCustomerService.execute();
-
-    expect(customers).toHaveLength(4);
-    expect(customers).toEqual(
-      expect.arrayContaining([customer01, customer02, customer03, customer04]),
-    );
+    expect(result.customers).toHaveLength(6);
+    expect(result.total).toBe(6);
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(10);
+    expect(result.lastPage).toBe(1);
   });
 
   it('Should return an empty array if no customers are found', async () => {
-    const { customers } = await getAllBusinessCustomerService.execute();
+    const result = await getAllBusinessCustomerService.execute(1, 10);
 
-    expect(customers).toHaveLength(0);
-    expect(customers).toEqual([]);
+    expect(result.customers).toHaveLength(0);
+    expect(result.total).toBe(0);
+    expect(result.lastPage).toBe(1);
+  });
+
+  it('Should return only the first page of customers', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryBusinessCustomerRepository.customers.push(
+        makeBusinessCustomer({ cnpj: `CNPJ-${i}` }),
+      );
+    }
+
+    const result = await getAllBusinessCustomerService.execute(1, 2);
+
+    expect(result.customers).toHaveLength(2);
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(6);
+    expect(result.lastPage).toBe(3);
+  });
+
+  it('Should return the second page of customers', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryBusinessCustomerRepository.customers.push(
+        makeBusinessCustomer({ cnpj: `CNPJ-${i}` }),
+      );
+    }
+
+    const result = await getAllBusinessCustomerService.execute(2, 2);
+
+    expect(result.customers).toHaveLength(2);
+    expect(result.page).toBe(2);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(6);
+    expect(result.lastPage).toBe(3);
+  });
+
+  it('Should return the last page with remaining customers', async () => {
+    for (let i = 0; i < 5; i++) {
+      inMemoryBusinessCustomerRepository.customers.push(
+        makeBusinessCustomer({ cnpj: `CNPJ-${i}` }),
+      );
+    }
+
+    const result = await getAllBusinessCustomerService.execute(3, 2);
+
+    expect(result.customers).toHaveLength(1);
+    expect(result.page).toBe(3);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(5);
+    expect(result.lastPage).toBe(3);
   });
 });

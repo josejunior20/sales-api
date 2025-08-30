@@ -5,6 +5,10 @@ import { IndividualCustomerRepository } from '../repositories/Individual-custome
 
 interface GetAllIndividualCustomersResponse {
   customers: IndividualCustomer[];
+  total: number;
+  page: number;
+  limit: number;
+  lastPage: number;
 }
 
 @Injectable()
@@ -13,8 +17,11 @@ export class GetAllIndividualCustomerService {
     private readonly customerRepository: IndividualCustomerRepository,
   ) {}
 
-  async execute(): Promise<GetAllIndividualCustomersResponse> {
-    const customers = await this.customerRepository.findAll();
-    return { customers };
+  async execute(
+    page = 1,
+    limit = 10,
+  ): Promise<GetAllIndividualCustomersResponse> {
+    const customer = await this.customerRepository.findAll(page, limit);
+    return { customers: customer.data, ...customer };
   }
 }

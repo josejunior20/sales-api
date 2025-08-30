@@ -1,6 +1,7 @@
 import { Customer } from '@modules/customer/domain/entities/Customer';
 import { IndividualCustomer } from '@modules/customer/domain/entities/Individual-customer';
 import { IndividualCustomerRepository } from '@modules/customer/domain/repositories/Individual-customer.repositories';
+import { PaginatedResult } from '@shared/domain/interfaces/paginate.interface';
 
 export class InMemoryIndividualCustomerRepository
   implements IndividualCustomerRepository
@@ -31,12 +32,18 @@ export class InMemoryIndividualCustomerRepository
     return (customer as IndividualCustomer) ?? null;
   }
 
-  async findAll(): Promise<IndividualCustomer[]> {
-    return this.customers;
-  }
-
   async findByCpf(cpf: string): Promise<IndividualCustomer | null> {
     const customer = this.customers.find(data => data.cpf === cpf);
     return (customer as IndividualCustomer) ?? null;
+  }
+
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IndividualCustomer>> {
+    const total = this.customers.length;
+    const lastPage = total === 0 ? 1 : Math.ceil(total / limit);
+    const data = this.customers.slice((page - 1) * limit, page * limit);
+    return { data, total, page, limit, lastPage };
   }
 }

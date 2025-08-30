@@ -3,40 +3,86 @@ import { InMemoryIndividualCustomerRepository } from '@test/Customer/repositorie
 
 import { GetAllIndividualCustomerService } from './Get-all-individual-customer.service';
 
-let getAllIndividualCustomer: GetAllIndividualCustomerService;
-let inMemoryIndividualCustomer: InMemoryIndividualCustomerRepository;
-describe('Get All Individual Customers', () => {
+let getAllIndividualCustomerService: GetAllIndividualCustomerService;
+let inMemoryIndividualCustomerRepository: InMemoryIndividualCustomerRepository;
+describe('Get all Individual Customers (with pagination)', () => {
   beforeEach(() => {
-    inMemoryIndividualCustomer = new InMemoryIndividualCustomerRepository();
-    getAllIndividualCustomer = new GetAllIndividualCustomerService(
-      inMemoryIndividualCustomer,
+    inMemoryIndividualCustomerRepository =
+      new InMemoryIndividualCustomerRepository();
+    getAllIndividualCustomerService = new GetAllIndividualCustomerService(
+      inMemoryIndividualCustomerRepository,
     );
   });
 
-  it('should return all persisted individual customers', async () => {
-    const customer01 = makeIndividualCustomer({ cpf: '111-111-111-11' });
-    const customer02 = makeIndividualCustomer({ cpf: '222-222-222-22' });
-    const customer03 = makeIndividualCustomer({ cpf: '333-333-333-33' });
-    const customer04 = makeIndividualCustomer({ cpf: '444-444-444-44' });
+  it('Should return all persisted business customers when no pagination params are given (default)', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryIndividualCustomerRepository.customers.push(
+        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+      );
+    }
 
-    inMemoryIndividualCustomer.customers = [
-      customer01,
-      customer02,
-      customer03,
-      customer04,
-    ];
+    const result = await getAllIndividualCustomerService.execute(1, 10);
 
-    const { customers } = await getAllIndividualCustomer.execute();
-    expect(customers).toHaveLength(4);
-    expect(customers).toEqual(
-      expect.arrayContaining([customer01, customer02, customer03, customer04]),
-    );
+    expect(result.customers).toHaveLength(6);
+    expect(result.total).toBe(6);
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(10);
+    expect(result.lastPage).toBe(1);
   });
 
   it('Should return an empty array if no customers are found', async () => {
-    const { customers } = await getAllIndividualCustomer.execute();
+    const result = await getAllIndividualCustomerService.execute(1, 10);
 
-    expect(customers).toHaveLength(0);
-    expect(customers).toEqual([]);
+    expect(result.customers).toHaveLength(0);
+    expect(result.total).toBe(0);
+    expect(result.lastPage).toBe(1);
+  });
+
+  it('Should return only the first page of customers', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryIndividualCustomerRepository.customers.push(
+        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+      );
+    }
+
+    const result = await getAllIndividualCustomerService.execute(1, 2);
+
+    expect(result.customers).toHaveLength(2);
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(6);
+    expect(result.lastPage).toBe(3);
+  });
+
+  it('Should return the second page of customers', async () => {
+    for (let i = 0; i < 6; i++) {
+      inMemoryIndividualCustomerRepository.customers.push(
+        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+      );
+    }
+
+    const result = await getAllIndividualCustomerService.execute(2, 2);
+
+    expect(result.customers).toHaveLength(2);
+    expect(result.page).toBe(2);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(6);
+    expect(result.lastPage).toBe(3);
+  });
+
+  it('Should return the last page with remaining customers', async () => {
+    for (let i = 0; i < 5; i++) {
+      inMemoryIndividualCustomerRepository.customers.push(
+        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+      );
+    }
+
+    const result = await getAllIndividualCustomerService.execute(3, 2);
+
+    expect(result.customers).toHaveLength(1);
+    expect(result.page).toBe(3);
+    expect(result.limit).toBe(2);
+    expect(result.total).toBe(5);
+    expect(result.lastPage).toBe(3);
   });
 });
