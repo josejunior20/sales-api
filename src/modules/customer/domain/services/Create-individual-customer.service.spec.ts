@@ -1,5 +1,8 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
-import { makeIndividualCustomer } from '@test/Customer/Individual-customer.factory';
+import {
+  makeIndividualCustomer,
+  makeIndividualCustomerRequest,
+} from '@test/Customer/Individual-customer.factory';
 import { InMemoryIndividualCustomerRepository } from '@test/Customer/repositories/in-memory-individual-customer.repository';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
@@ -16,16 +19,17 @@ describe('Create Individual Customer', () => {
     );
   });
 
-  it('Should be able to throw error when create individual customer with already exist cpf', () => {
-    const customer = makeIndividualCustomer();
+  it('Should throw error when creating customer with existing cpf', async () => {
+    const existingCustomer = makeIndividualCustomer();
+    inMemoryCustomerRepository.customers = [existingCustomer];
 
-    inMemoryCustomerRepository.customers = [customer];
-
-    expect(
-      async () =>
-        await createIndividualCustomer.execute(makeIndividualCustomer()),
+    await expect(
+      createIndividualCustomer.execute(
+        makeIndividualCustomerRequest({ cpf: existingCustomer.cpf }),
+      ),
     ).rejects.toThrow(CustomerConflictException);
   });
+
   it('should be able to create a individual customer ', () => {
     const customer = makeIndividualCustomer();
     inMemoryCustomerRepository.customers = [customer];
@@ -34,9 +38,8 @@ describe('Create Individual Customer', () => {
     expect(inMemoryCustomerRepository.customers[0]).toEqual(customer);
   });
 
-  it('should persist customer in repository when created', async () => {
-    const request = makeIndividualCustomer();
-
+  it('should be able to add a customer in memory repository manually', async () => {
+    const request = makeIndividualCustomerRequest();
     await createIndividualCustomer.execute(request);
 
     expect(inMemoryCustomerRepository.customers).toHaveLength(1);
@@ -49,17 +52,16 @@ describe('Create Individual Customer', () => {
   });
 
   it('should return the created customer', async () => {
-    const request = makeIndividualCustomer();
+    const request = makeIndividualCustomerRequest();
 
     const { customer } = await createIndividualCustomer.execute(request);
 
     expect(customer).toBeInstanceOf(IndividualCustomer);
-    expect(customer.cpf).toBe(request.cpf);
+    expect(customer.cpf).toBe(customer.cpf);
   });
 
   it('should set id and timestamps when creating a new customer', async () => {
-    const request = makeIndividualCustomer();
-
+    const request = makeIndividualCustomerRequest();
     const { customer } = await createIndividualCustomer.execute(request);
 
     expect(customer.id).toBeDefined();

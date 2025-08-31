@@ -6,12 +6,12 @@ import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 import { BusinessCustomer } from '../entities/Business-customer';
 import { BusinessCustomerRepository } from '../repositories/Business-customer.repository';
 
-interface CreateBusinessCustomerRequest {
+export interface CreateBusinessCustomerRequest {
   companyName: string;
   tradeName: string;
   cnpj: string;
-  email: Email;
-  phone: Phone;
+  email: string;
+  phone: string;
   address: string;
 }
 
@@ -39,11 +39,11 @@ export class CreateBusinessCustomer {
 
     const customer = new BusinessCustomer({
       address,
-      cnpj,
       companyName,
-      email,
-      phone,
       tradeName,
+      cnpj,
+      email: new Email(email),
+      phone: new Phone(phone),
     });
 
     await this.customerRepository.create(customer);

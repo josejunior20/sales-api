@@ -1,4 +1,3 @@
-import { Customer } from '@modules/customer/domain/entities/Customer';
 import { IndividualCustomer } from '@modules/customer/domain/entities/Individual-customer';
 import { IndividualCustomerRepository } from '@modules/customer/domain/repositories/Individual-customer.repositories';
 import { PaginatedResult } from '@shared/domain/interfaces/paginate.interface';
@@ -26,9 +25,7 @@ export class InMemoryIndividualCustomerRepository
   }
 
   async findById(customerId: string): Promise<IndividualCustomer | null> {
-    const customer = this.customers.find(
-      data => data instanceof Customer && data.id === customerId,
-    );
+    const customer = this.customers.find(data => data.id === customerId);
     return (customer as IndividualCustomer) ?? null;
   }
 
