@@ -1,5 +1,8 @@
+import { Email } from '@shared/domain/values-objects/email.value-object';
+import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 import { Replace } from '@shared/helpers/replace';
 
+import { UpdateBusinessCustomerRequest } from '../services/Update-business-customer.service';
 import { Customer, CustomerProps } from './Customer';
 
 export interface BusinessCustomerProps {
@@ -50,5 +53,16 @@ export class BusinessCustomer extends Customer {
       /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
       '$1.$2.$3/$4-$5',
     );
+  }
+
+  public updateProfile(
+    props: Partial<Pick<UpdateBusinessCustomerRequest, 'customerId'>> &
+      Omit<UpdateBusinessCustomerRequest, 'customerId'>,
+  ): void {
+    this.updateCompanyName(props.companyName);
+    this.updateTradeName(props.tradeName);
+    this.updateEmail(new Email(props.email));
+    this.updatePhone(new Phone(props.phone));
+    this.updateAddress(props.address);
   }
 }

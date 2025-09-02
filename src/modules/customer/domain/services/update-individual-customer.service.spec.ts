@@ -1,4 +1,5 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
+import { InvalidEmailException } from '@shared/exceptions/Invalid-email.exception';
 import { makeIndividualCustomer } from '@test/Customer/Individual-customer.factory';
 import { InMemoryIndividualCustomerRepository } from '@test/Customer/repositories/in-memory-individual-customer.repository';
 
@@ -94,10 +95,10 @@ describe('Update Individual Customer', () => {
       updateIndividualCustomer.execute({
         customerId: customer.id,
         name: 'Invalid Email User',
-        email: 'invalid-email', // sem formato válido
+        email: 'invalid-email',
         phone: '123456789',
         address: 'Rua Errada, nº 0',
       }),
-    ).rejects.toThrowError();
+    ).rejects.toBeInstanceOf(InvalidEmailException);
   });
 });
