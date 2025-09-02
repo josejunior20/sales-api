@@ -1,7 +1,9 @@
 import { InvalidCustomerNameException } from '@modules/customer/exceptions/Invalid-customer-name.exception';
+import { Email } from '@shared/domain/values-objects/email.value-object';
+import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 import { Replace } from '@shared/helpers/replace';
 
-import { UpdateIndividualCustomerRequest } from '../services/update-individul-customer.service';
+import { UpdateIndividualCustomerRequest } from '../services/update-individual-customer.service';
 import { Customer, CustomerProps } from './Customer';
 
 export interface IndividualCustomerProps {
@@ -44,8 +46,8 @@ export class IndividualCustomer extends Customer {
       Omit<UpdateIndividualCustomerRequest, 'customerId'>,
   ): void {
     this.updateName(props.name);
-    this.updateEmail(props.email);
-    this.updatePhone(props.phone);
+    this.updateEmail(new Email(props.email));
+    this.updatePhone(new Phone(props.phone));
     this.updateAddress(props.address);
   }
 }
