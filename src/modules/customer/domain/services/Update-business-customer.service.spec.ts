@@ -82,5 +82,7 @@ describe('Update Business Customer', () => {
     expect(customerUpdated.companyName).toEqual('New Company Name');
     expect(customerUpdated.tradeName).toEqual('New Trade Name');
     expect(customerUpdated.email.getValue()).toEqual('newmail@example.com');
+    expect(customerUpdated.phone.getValue()).toEqual('987654321');
+    expect(customerUpdated.address).toEqual('Rua Persistência, nº 45');
   });
 });
