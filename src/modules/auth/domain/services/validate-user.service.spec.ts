@@ -1,6 +1,5 @@
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
-import { Email } from '@shared/domain/values-objects/email.value-object';
 import { FakeHashRepository } from '@test/User/fake-hash-repository/fake-hash-repository';
 import { InMemoryUserRepository } from '@test/User/repositories/in-memory-user-repository';
 import { makeUser } from '@test/User/User-factory';
@@ -30,7 +29,7 @@ describe('Validate User', () => {
     inMemoryUserRepository.users = [user];
 
     const result = await validateUserService.execute({
-      email: user.email,
+      email: user.email.getValue(),
       password: plaintextPassword,
     });
 
@@ -45,7 +44,7 @@ describe('Validate User', () => {
 
     await expect(
       validateUserService.execute({
-        email: new Email('invalid@example.com'),
+        email: 'invalid@example.com',
         password: 'Teste123',
       }),
     ).rejects.toThrow(UserNotFoundException);
@@ -59,7 +58,7 @@ describe('Validate User', () => {
 
     await expect(
       validateUserService.execute({
-        email: user.email,
+        email: user.email.getValue(),
         password: 'WrongPassword',
       }),
     ).rejects.toThrow(AuthIncorrectExceptions);

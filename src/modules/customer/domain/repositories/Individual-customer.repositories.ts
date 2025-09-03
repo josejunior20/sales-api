@@ -1,3 +1,5 @@
+import { PaginatedResult } from '@shared/domain/interfaces/paginate.interface';
+
 import { IndividualCustomer } from '../entities/Individual-customer';
 
 export abstract class IndividualCustomerRepository {
@@ -5,6 +7,9 @@ export abstract class IndividualCustomerRepository {
   abstract save(customer: IndividualCustomer): Promise<void>;
   abstract delete(customerId: string): Promise<void>;
   abstract findById(customerId: string): Promise<IndividualCustomer | null>;
-  abstract findAll(): Promise<IndividualCustomer[]>;
   abstract findByCpf(cpf: string): Promise<IndividualCustomer | null>;
+  abstract findAll(
+    page: number,
+    limit: number,
+  ): Promise<PaginatedResult<IndividualCustomer>>;
 }

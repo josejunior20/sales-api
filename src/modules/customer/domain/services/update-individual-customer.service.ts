@@ -1,6 +1,4 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
-import { Email } from '@shared/domain/values-objects/email.value-object';
-import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
@@ -8,8 +6,8 @@ import { IndividualCustomerRepository } from '../repositories/Individual-custome
 export interface UpdateIndividualCustomerRequest {
   customerId: string;
   name: string;
-  email: Email;
-  phone: Phone;
+  email: string;
+  phone: string;
   address: string;
 }
 

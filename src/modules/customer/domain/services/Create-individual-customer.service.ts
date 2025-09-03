@@ -6,11 +6,11 @@ import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 import { IndividualCustomer } from './../entities/Individual-customer';
 
-interface CreateIndividualCustomerRequest {
+export interface CreateIndividualCustomerRequest {
   name: string;
   cpf: string;
-  email: Email;
-  phone: Phone;
+  email: string;
+  phone: string;
   address: string;
 }
 interface CreateIndividualCustomerResponse {
@@ -30,15 +30,15 @@ export class CreateIndividualCustomer {
     phone,
     address,
   }: CreateIndividualCustomerRequest): Promise<CreateIndividualCustomerResponse> {
-    const customerAlreadExists = await this.customerRepository.findByCpf(cpf);
-    if (customerAlreadExists) throw new CustomerConflictException();
+    const customerAlreadyExists = await this.customerRepository.findByCpf(cpf);
+    if (customerAlreadyExists) throw new CustomerConflictException();
 
     const customer = new IndividualCustomer({
-      address,
-      cpf,
-      email,
       name,
-      phone,
+      cpf,
+      address,
+      email: new Email(email),
+      phone: new Phone(phone),
     });
 
     await this.customerRepository.create(customer);

@@ -12,7 +12,7 @@ import { UserRepository } from '../repositories/user-repository';
 export interface UpdateUserRequest {
   userId: string;
   name?: string;
-  email?: Email;
+  email?: string;
   password?: string;
   oldPassword?: string;
 }
@@ -55,7 +55,7 @@ export class UpdateUserService {
     }
     user.updateProfile({
       name,
-      email,
+      email: new Email(email),
     });
 
     await this.userRepository.save(user);

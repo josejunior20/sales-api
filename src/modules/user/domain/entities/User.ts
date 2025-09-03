@@ -6,8 +6,6 @@ import {
 import { Email } from '@shared/domain/values-objects/email.value-object';
 import { Replace } from '@shared/helpers/replace';
 
-import { UpdateUserRequest } from '../services/update-user.service';
-
 export enum UserRole {
   ADMIN = 'ADMIN',
   USER = 'USER',
@@ -46,7 +44,7 @@ export class User extends BaseEntity {
   public get email(): Email {
     return this.userProps.email;
   }
-  protected updatedEmail(email: Email): void {
+  protected updateEmail(email: Email): void {
     this.userProps.email = email;
     this.touch();
   }
@@ -86,18 +84,10 @@ export class User extends BaseEntity {
     return this.userProps.roles.includes(role);
   }
 
-  public updateProfile(
-    props: Partial<Pick<UpdateUserRequest, 'userId'>> &
-      Omit<UpdateUserRequest, 'userId'>,
-  ): void {
-    if (props.name !== undefined) {
-      this.updateName(props.name);
-    }
-    if (props.email !== undefined) {
-      this.updatedEmail(props.email);
-    }
-    if (props.password !== undefined) {
-      this.updatePassword(props.password);
-    }
+  public updateProfile(props: Partial<UserProps>): void {
+    if (props.name !== undefined) this.updateName(props.name);
+    if (props.email !== undefined) this.updateEmail(props.email);
+    if (props.password !== undefined) this.updatePassword(props.password);
+    if (props.roles !== undefined) this.setRoles(props.roles);
   }
 }

@@ -1,14 +1,16 @@
 import { CustomerConflictException } from '@modules/customer/exceptions/customer-conflict.exception';
-import { makeBusinessCustomer } from '@test/Customer/Business-customer.factory';
+import {
+  makeBusinessCustomer,
+  makeBusinessCustomerRequest,
+} from '@test/Customer/Business-customer.factory';
 import { InMemoryBusinessCustomerRepository } from '@test/Customer/repositories/in-memory-business-customer.repository';
 
-import { BusinessCustomer } from '../entities/Business-customer';
 import { CreateBusinessCustomer } from './Create-business-customer.service';
 
 let createBusinessCustomer: CreateBusinessCustomer;
 let inMemoryCustomerRepository: InMemoryBusinessCustomerRepository;
 
-describe(' Create Business customer', () => {
+describe('Create Business Customer', () => {
   beforeEach(() => {
     inMemoryCustomerRepository = new InMemoryBusinessCustomerRepository();
     createBusinessCustomer = new CreateBusinessCustomer(
@@ -16,16 +18,7 @@ describe(' Create Business customer', () => {
     );
   });
 
-  it('Should be able to throw error when create individual customer with already exist cnpj', () => {
-    const customer = makeBusinessCustomer();
-
-    inMemoryCustomerRepository.customers = [customer];
-
-    expect(
-      async () => await createBusinessCustomer.execute(makeBusinessCustomer()),
-    ).rejects.toThrow(CustomerConflictException);
-  });
-  it('should be able to create a individual customer ', () => {
+  it('should be able to add a Business customer manually to repo', () => {
     const customer = makeBusinessCustomer();
     inMemoryCustomerRepository.customers = [customer];
 
@@ -34,35 +27,45 @@ describe(' Create Business customer', () => {
   });
 
   it('should persist customer in repository when created', async () => {
-    const request = makeBusinessCustomer();
-
-    await createBusinessCustomer.execute(request);
-
-    expect(inMemoryCustomerRepository.customers).toHaveLength(1);
-    expect(inMemoryCustomerRepository.customers[0]).toBeInstanceOf(
-      BusinessCustomer,
-    );
-    expect(
-      (inMemoryCustomerRepository.customers[0] as BusinessCustomer).cnpj,
-    ).toBe(request.cnpj);
-  });
-
-  it('should return the created customer', async () => {
-    const request = makeBusinessCustomer();
+    const request = makeBusinessCustomerRequest();
 
     const { customer } = await createBusinessCustomer.execute(request);
 
-    expect(customer).toBeInstanceOf(BusinessCustomer);
-    expect(customer.cnpj).toBe(request.cnpj);
+    expect(inMemoryCustomerRepository.customers).toContain(customer);
+
+    const found = await inMemoryCustomerRepository.findByCnpj(request.cnpj);
+    expect(found).toBeTruthy();
+    expect(found?.id).toEqual(customer.id);
+  });
+
+  it('should return the created customer', async () => {
+    const request = makeBusinessCustomerRequest();
+
+    const { customer } = await createBusinessCustomer.execute(request);
+
+    expect(customer).toBeDefined();
+    expect(customer.companyName).toBe(request.companyName);
+    expect(customer.tradeName).toBe(request.tradeName);
+    expect(customer.cnpj).toBe('12.456.789/0000-00');
   });
 
   it('should set id and timestamps when creating a new customer', async () => {
-    const request = makeBusinessCustomer();
+    const request = makeBusinessCustomerRequest();
 
     const { customer } = await createBusinessCustomer.execute(request);
 
     expect(customer.id).toBeDefined();
     expect(customer.createdAt).toBeInstanceOf(Date);
     expect(customer.updatedAt).toBeInstanceOf(Date);
+  });
+
+  it('should throw error when creating business customer with existing cnpj', async () => {
+    const request = makeBusinessCustomerRequest();
+
+    await createBusinessCustomer.execute(request);
+
+    await expect(createBusinessCustomer.execute(request)).rejects.toThrow(
+      CustomerConflictException,
+    );
   });
 });

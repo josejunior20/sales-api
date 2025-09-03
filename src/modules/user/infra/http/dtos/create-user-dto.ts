@@ -12,7 +12,7 @@ export class CreateUserDto {
   @IsNotEmptyCustom()
   @IsStringCustom()
   @IsEmailCustom()
-  email: Email;
+  email: string;
 
   @IsNotEmptyCustom()
   @MinLengthCustom(6)

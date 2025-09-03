@@ -5,6 +5,10 @@ import { BusinessCustomer } from '../entities/Business-customer';
 
 interface GetAllBusinessCustomerResponse {
   customers: BusinessCustomer[];
+  total: number;
+  page: number;
+  limit: number;
+  lastPage: number;
 }
 @Injectable()
 export class GetAllBusinessCustomerService {
@@ -12,8 +16,8 @@ export class GetAllBusinessCustomerService {
     private readonly businessCustomerRepository: BusinessCustomerRepository,
   ) {}
 
-  async execute(): Promise<GetAllBusinessCustomerResponse> {
-    const customers = await this.businessCustomerRepository.findAll();
-    return { customers };
+  async execute(page = 1, limit = 10): Promise<GetAllBusinessCustomerResponse> {
+    const customer = await this.businessCustomerRepository.findAll(page, limit);
+    return { customers: customer.data, ...customer };
   }
 }

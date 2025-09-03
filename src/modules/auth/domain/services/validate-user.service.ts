@@ -4,10 +4,9 @@ import { UserRepository } from '@modules/user/domain/repositories/user-repositor
 import { AuthIncorrectExceptions } from '@modules/user/exceptions/auth-incorrect-exception';
 import { UserNotFoundException } from '@modules/user/exceptions/user-not-found-exception';
 import { Injectable } from '@nestjs/common';
-import { Email } from '@shared/domain/values-objects/email.value-object';
 
 interface ValidateUserRequest {
-  email: Email;
+  email: string;
   password: string;
 }
 
