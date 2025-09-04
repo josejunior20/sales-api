@@ -1,11 +1,12 @@
-import { IndividualCustomer } from '@modules/customer/domain/entities/Individual-customer';
+import { BusinessCustomer } from '@modules/customer/domain/entities/Business-customer';
 import { Email } from '@shared/domain/values-objects/email.value-object';
 import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
-type RawIndividualCustomer = {
+type RawBusinessCustomer = {
   customerId: string;
-  name: string;
-  cpf: string;
+  companyName: string;
+  tradeName: string;
+  cnpj: string;
   customer: {
     id: string;
     email: string;
@@ -15,13 +16,13 @@ type RawIndividualCustomer = {
     updatedAt: Date;
   };
 };
-
-export class PrismaIndividualCustomerMapper {
-  static toPrisma(customer: IndividualCustomer) {
+export class PrismaBusinessCustomerMapper {
+  static toPrisma(customer: BusinessCustomer) {
     return {
       customerId: customer.id,
-      name: customer.name,
-      cpf: customer.cpf,
+      companyName: customer.companyName,
+      tradeName: customer.tradeName,
+      cnpj: customer.cnpj,
       customer: {
         create: {
           id: customer.id,
@@ -35,11 +36,12 @@ export class PrismaIndividualCustomerMapper {
     };
   }
 
-  static toDomain(raw: RawIndividualCustomer): IndividualCustomer {
-    return new IndividualCustomer({
+  static toDomain(raw: RawBusinessCustomer): BusinessCustomer {
+    return new BusinessCustomer({
       id: raw.customer.id,
-      name: raw.name,
-      cpf: raw.cpf,
+      companyName: raw.companyName,
+      tradeName: raw.tradeName,
+      cnpj: raw.cnpj,
       email: new Email(raw.customer.email),
       phone: new Phone(raw.customer.phone),
       address: raw.customer.address,
