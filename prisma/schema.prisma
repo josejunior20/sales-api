@@ -29,3 +29,34 @@ model User {
 
   @@map("users")
 }
+
+model Customer {
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  phone              String
+  address            String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  IndividualCustomer IndividualCustomer?
+  BusinessCustomer   BusinessCustomer?
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+model IndividualCustomer {
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @unique
+  name       String
+  cpf        String   @unique
+}
+
+model BusinessCustomer {
+  customer    Customer @relation(fields: [customerId], references: [id])
+  customerId  String   @unique
+  companyName String
+  tradeName   String
+  cnpj        String   @unique
+}
