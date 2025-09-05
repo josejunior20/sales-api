@@ -2,7 +2,6 @@ import { User } from '@modules/user/domain/entities/User';
 import { UserRepository } from '@modules/user/domain/repositories/user-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@shared/database/prisma-service';
-import { Email } from '@shared/domain/values-objects/email.value-object';
 
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 

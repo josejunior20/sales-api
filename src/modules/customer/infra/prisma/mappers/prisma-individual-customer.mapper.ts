@@ -19,7 +19,6 @@ type RawIndividualCustomer = {
 export class PrismaIndividualCustomerMapper {
   static toPrisma(customer: IndividualCustomer) {
     return {
-      customerId: customer.id,
       name: customer.name,
       cpf: customer.cpf,
       customer: {

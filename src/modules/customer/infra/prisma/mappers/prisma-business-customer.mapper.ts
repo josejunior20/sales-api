@@ -19,7 +19,6 @@ type RawBusinessCustomer = {
 export class PrismaBusinessCustomerMapper {
   static toPrisma(customer: BusinessCustomer) {
     return {
-      customerId: customer.id,
       companyName: customer.companyName,
       tradeName: customer.tradeName,
       cnpj: customer.cnpj,
