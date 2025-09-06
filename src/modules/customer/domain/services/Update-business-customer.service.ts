@@ -1,4 +1,5 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
+import { Injectable } from '@nestjs/common';
 
 import { BusinessCustomer } from '../entities/Business-customer';
 import { BusinessCustomerRepository } from '../repositories/Business-customer.repository';
@@ -15,7 +16,7 @@ export interface UpdateBusinessCustomerRequest {
 interface UpdateBusinessCustomerResponse {
   customer: BusinessCustomer;
 }
-
+@Injectable()
 export class UpdateBusinessCustomer {
   constructor(private businessCustomerRepository: BusinessCustomerRepository) {}
 

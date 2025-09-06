@@ -30,7 +30,7 @@ export class InMemoryIndividualCustomerRepository
   }
 
   async findByCpf(cpf: string): Promise<IndividualCustomer | null> {
-    const customer = this.customers.find(data => data.cpf === cpf);
+    const customer = this.customers.find(data => data.cpf.getValue() === cpf);
     return (customer as IndividualCustomer) ?? null;
   }
 

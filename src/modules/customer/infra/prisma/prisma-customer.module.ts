@@ -18,9 +18,6 @@ import { PrismaIndividualCustomerRepository } from './repositories/prisma-indivi
       useClass: PrismaBusinessCustomerRepository,
     },
   ],
-  exports: [
-    PrismaIndividualCustomerRepository,
-    PrismaBusinessCustomerRepository,
-  ],
+  exports: [IndividualCustomerRepository, BusinessCustomerRepository],
 })
 export class PrismaCustomerModule {}

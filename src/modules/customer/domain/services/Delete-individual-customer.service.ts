@@ -1,11 +1,12 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
+import { Injectable } from '@nestjs/common';
 
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 
 export interface DeleteIndividualCustomerRequest {
   customerId: string;
 }
-
+@Injectable()
 export class DeleteIndividualCustomerService {
   constructor(
     private individualCustomerRepository: IndividualCustomerRepository,

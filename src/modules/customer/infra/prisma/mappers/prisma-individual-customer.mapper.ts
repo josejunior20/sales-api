@@ -1,4 +1,5 @@
 import { IndividualCustomer } from '@modules/customer/domain/entities/Individual-customer';
+import { Cpf } from '@shared/domain/values-objects/cpf.value-object';
 import { Email } from '@shared/domain/values-objects/email.value-object';
 import { Phone } from '@shared/domain/values-objects/Phone.value-object';
 
@@ -20,7 +21,7 @@ export class PrismaIndividualCustomerMapper {
   static toPrisma(customer: IndividualCustomer) {
     return {
       name: customer.name,
-      cpf: customer.cpf,
+      cpf: customer.cpf.getValue(),
       customer: {
         create: {
           id: customer.id,
@@ -38,7 +39,7 @@ export class PrismaIndividualCustomerMapper {
     return new IndividualCustomer({
       id: raw.customer.id,
       name: raw.name,
-      cpf: raw.cpf,
+      cpf: new Cpf(raw.cpf),
       email: new Email(raw.customer.email),
       phone: new Phone(raw.customer.phone),
       address: raw.customer.address,

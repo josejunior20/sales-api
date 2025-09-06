@@ -1,19 +1,21 @@
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
+import { Injectable } from '@nestjs/common';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
 import { IndividualCustomerRepository } from '../repositories/Individual-customer.repositories';
 
 export interface UpdateIndividualCustomerRequest {
   customerId: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
 }
 
 interface UpdateIndividualCustomerResponse {
   customer: IndividualCustomer;
 }
+@Injectable()
 export class UpdateIndividualCustomerService {
   constructor(
     private readonly individualCustomerRepository: IndividualCustomerRepository,
