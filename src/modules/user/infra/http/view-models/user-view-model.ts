@@ -5,8 +5,8 @@ export class UserViewModel {
     return {
       id: user.id,
       name: user.name,
-      email: user.email,
-      role: user.roles,
+      email: user.email.getValue(),
+      role: user.roles.toString(),
     };
   }
 }

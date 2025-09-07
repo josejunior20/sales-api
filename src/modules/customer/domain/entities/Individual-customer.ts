@@ -43,12 +43,11 @@ export class IndividualCustomer extends Customer {
   }
 
   public updateProfile(
-    props: Partial<Pick<UpdateIndividualCustomerRequest, 'customerId'>> &
-      Omit<UpdateIndividualCustomerRequest, 'customerId'>,
+    props: Partial<Omit<UpdateIndividualCustomerRequest, 'customerId'>>,
   ): void {
-    this.updateName(props.name);
-    this.updateEmail(new Email(props.email));
-    this.updatePhone(new Phone(props.phone));
-    this.updateAddress(props.address);
+    if (props.name !== undefined) this.updateName(props.name);
+    if (props.email !== undefined) this.updateEmail(new Email(props.email));
+    if (props.phone !== undefined) this.updatePhone(new Phone(props.phone));
+    if (props.address !== undefined) this.updateAddress(props.address);
   }
 }

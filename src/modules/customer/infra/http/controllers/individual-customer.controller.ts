@@ -12,7 +12,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CustomUUIDPipe } from '@shared/pipes/custom-uuid.pipe';
 
 import { CreateIndividualCustomerDto } from '../dtos/create-individual-customer.dto';
 import { UpdateIndividualCustomerDto } from '../dtos/update-individual-customer.dto';
@@ -30,14 +29,14 @@ export class IndividualCustomerController {
   async create(
     @Body() { name, cpf, email, phone, address }: CreateIndividualCustomerDto,
   ) {
-    const { customer } = await this.createCustomerService.execute({
+    await this.createCustomerService.execute({
       name,
       cpf,
       email,
       phone,
       address,
     });
-    return { customer: IndividualCustomerViewModel.toHttp(customer) };
+    return { message: 'User created successfully' };
   }
 
   @Get()
@@ -48,7 +47,7 @@ export class IndividualCustomerController {
 
   @Put(':id')
   async update(
-    @Param('id', CustomUUIDPipe) customerId: string,
+    @Param('id') customerId: string,
     @Body() { name, email, phone, address }: UpdateIndividualCustomerDto,
   ) {
     await this.updateCustomerService.execute({
@@ -63,8 +62,7 @@ export class IndividualCustomerController {
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id', CustomUUIDPipe) customerId: string) {
+  async delete(@Param('id') customerId: string) {
     await this.deleteCustomerService.execute({ customerId });
-    return { message: 'User deleted successfully' };
   }
 }

@@ -5,7 +5,7 @@ import { UserPasswordRequiredException } from '@modules/user/exceptions/user-pas
 import { Injectable } from '@nestjs/common';
 import { Email } from '@shared/domain/values-objects/email.value-object';
 
-import { User } from '../entities/User';
+import { User, UserProps } from '../entities/User';
 import { HashPasswordRepository } from '../repositories/hash-password-repository';
 import { UserRepository } from '../repositories/user-repository';
 
@@ -29,36 +29,45 @@ export class UpdateUserService {
   ) {}
 
   async execute({
+    userId,
     email,
     name,
-    oldPassword,
     password,
-    userId,
+    oldPassword,
   }: UpdateUserRequest): Promise<UpdateUserResponse> {
     const user = await this.userRepository.findById(userId);
     if (!user) throw new UserNotFoundException();
 
-    const updateEmail = await this.userRepository.findByEmail(email);
-    if (updateEmail && updateEmail.id !== user.id)
-      throw new UserConflictException();
+    if (email && email !== user.email.getValue()) {
+      const existingEmailUser = await this.userRepository.findByEmail(email);
+      if (existingEmailUser && existingEmailUser.id !== user.id) {
+        throw new UserConflictException();
+      }
+    }
 
     if (password) {
       if (!oldPassword) throw new UserPasswordRequiredException();
 
-      const validOldPassword = await this.hashPassword.compareHash(
+      const isOldPasswordValid = await this.hashPassword.compareHash(
         oldPassword,
         user.password,
       );
-      if (!validOldPassword) throw new UserPasswordNotMatchException();
-      const newHashPassword = await this.hashPassword.generateHash(password);
-      user.updateProfile({ password: newHashPassword });
+      if (!isOldPasswordValid) throw new UserPasswordNotMatchException();
+
+      const hashedPassword = await this.hashPassword.generateHash(password);
+      user.updateProfile({ password: hashedPassword });
     }
-    user.updateProfile({
-      name,
-      email: new Email(email),
-    });
+
+    const updateData: Partial<UserProps> = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = new Email(email);
+
+    if (Object.keys(updateData).length > 0) {
+      user.updateProfile(updateData);
+    }
 
     await this.userRepository.save(user);
+
     return { user };
   }
 }

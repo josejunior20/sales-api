@@ -11,15 +11,16 @@ export class PrismaIndividualCustomerRepository
   implements IndividualCustomerRepository
 {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(customer: IndividualCustomer): Promise<void> {
-    const raw = PrismaIndividualCustomerMapper.toPrisma(customer);
+    const raw = PrismaIndividualCustomerMapper.toPrismaCreate(customer);
     await this.prisma.individualCustomer.create({
       data: raw,
     });
   }
 
   async save(customer: IndividualCustomer): Promise<void> {
-    const raw = PrismaIndividualCustomerMapper.toPrisma(customer);
+    const raw = PrismaIndividualCustomerMapper.toPrismaUpdate(customer);
     await this.prisma.individualCustomer.update({
       where: {
         customerId: customer.id,
@@ -27,6 +28,7 @@ export class PrismaIndividualCustomerRepository
       data: raw,
     });
   }
+
   async delete(customerId: string): Promise<void> {
     await this.prisma.individualCustomer.delete({
       where: {
@@ -42,9 +44,23 @@ export class PrismaIndividualCustomerRepository
     if (!raw) return null;
     return PrismaIndividualCustomerMapper.toDomain(raw);
   }
+
+  async findByEmail(email: string): Promise<IndividualCustomer | null> {
+    const raw = await this.prisma.individualCustomer.findFirst({
+      where: {
+        customer: {
+          email,
+        },
+      },
+      include: { customer: true },
+    });
+    if (!raw) return null;
+    return PrismaIndividualCustomerMapper.toDomain(raw);
+  }
   async findByCpf(cpf: string): Promise<IndividualCustomer | null> {
+    const cleanCpf = cpf.replace(/\D/g, '');
     const raw = await this.prisma.individualCustomer.findUnique({
-      where: { cpf },
+      where: { cpf: cleanCpf },
       include: { customer: true },
     });
     if (!raw) return null;

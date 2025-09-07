@@ -1,3 +1,4 @@
+import { CustomerEmailConflictException } from '@modules/customer/exceptions/customer-email-conflict.exception copy';
 import { CustomerNotFoundException } from '@modules/customer/exceptions/customer-not-found.exceptions';
 import { Injectable } from '@nestjs/common';
 
@@ -32,6 +33,13 @@ export class UpdateIndividualCustomerService {
       customerId,
     );
     if (!customer) throw new CustomerNotFoundException();
+    if (email && email !== customer.email.getValue()) {
+      const existingEmailUser =
+        await this.individualCustomerRepository.findByEmail(email);
+      if (existingEmailUser && existingEmailUser.id !== customer.id) {
+        throw new CustomerEmailConflictException();
+      }
+    }
 
     customer.updateProfile({ name, address, phone, email });
 

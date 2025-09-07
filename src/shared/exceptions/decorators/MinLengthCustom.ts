@@ -1,5 +1,4 @@
 import {
-  minLength,
   registerDecorator,
   ValidationArguments,
   ValidationOptions,
@@ -15,12 +14,13 @@ export function MinLengthCustom(
     registerDecorator({
       name: 'MinLengthCustom',
       target: object.constructor,
-      propertyName: propertyName,
-      constraints: [min],
+      propertyName,
       options: validationOptions,
       validator: {
-        validate(value: unknown) {
-          return minLength(value, min);
+        validate(value: any) {
+          if (value === undefined || value === null) return true;
+          if (typeof value !== 'string') return false;
+          return value.length >= min;
         },
         defaultMessage(validationArguments: ValidationArguments) {
           return ExceptionMessage.MinLength(validationArguments.property, min);

@@ -18,7 +18,7 @@ type RawIndividualCustomer = {
 };
 
 export class PrismaIndividualCustomerMapper {
-  static toPrisma(customer: IndividualCustomer) {
+  static toPrismaCreate(customer: IndividualCustomer) {
     return {
       name: customer.name,
       cpf: customer.cpf.getValue(),
@@ -29,6 +29,21 @@ export class PrismaIndividualCustomerMapper {
           phone: customer.phone.getValue(),
           address: customer.address,
           createdAt: customer.createdAt,
+          updatedAt: customer.updatedAt,
+        },
+      },
+    };
+  }
+
+  static toPrismaUpdate(customer: IndividualCustomer) {
+    return {
+      name: customer.name,
+      cpf: customer.cpf.getValue(),
+      customer: {
+        update: {
+          email: customer.email.getValue(),
+          phone: customer.phone.getValue(),
+          address: customer.address,
           updatedAt: customer.updatedAt,
         },
       },

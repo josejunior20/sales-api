@@ -1,4 +1,3 @@
-import { Email } from '@shared/domain/values-objects/email.value-object';
 import { IsEmailCustom } from '@shared/exceptions/decorators/IsEmailCustom';
 import { IsNotEmptyCustom } from '@shared/exceptions/decorators/IsNotEmptyCustom';
 import { IsStringCustom } from '@shared/exceptions/decorators/IsStringCustom';

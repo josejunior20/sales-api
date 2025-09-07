@@ -1,5 +1,4 @@
 import {
-  isEmail,
   registerDecorator,
   ValidationArguments,
   ValidationOptions,
@@ -12,15 +11,13 @@ export function IsEmailCustom(validationOptions?: ValidationOptions) {
     registerDecorator({
       name: 'IsEmailCustom',
       target: object.constructor,
-      propertyName: propertyName,
-      constraints: [],
+      propertyName,
       options: validationOptions,
       validator: {
-        validate(value: string) {
+        validate(value: any) {
+          if (value === undefined || value === null) return true;
           if (typeof value !== 'string') return false;
-
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
           return emailRegex.test(value);
         },
         defaultMessage(validationArguments: ValidationArguments) {
