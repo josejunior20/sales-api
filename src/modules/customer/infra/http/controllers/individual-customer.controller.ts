@@ -1,6 +1,7 @@
 import { CreateIndividualCustomerService } from '@modules/customer/domain/services/Create-individual-customer.service';
 import { DeleteIndividualCustomerService } from '@modules/customer/domain/services/Delete-individual-customer.service';
 import { GetAllIndividualCustomerService } from '@modules/customer/domain/services/Get-all-individual-customer.service';
+import { GetIndividualCustomerService } from '@modules/customer/domain/services/Get-individual-customer.service';
 import { UpdateIndividualCustomerService } from '@modules/customer/domain/services/update-individual-customer.service';
 import {
   Body,
@@ -21,6 +22,7 @@ export class IndividualCustomerController {
   constructor(
     private readonly createCustomerService: CreateIndividualCustomerService,
     private readonly getAllCustomerService: GetAllIndividualCustomerService,
+    private readonly getCustomerService: GetIndividualCustomerService,
     private readonly updateCustomerService: UpdateIndividualCustomerService,
     private readonly deleteCustomerService: DeleteIndividualCustomerService,
   ) {}
@@ -43,6 +45,14 @@ export class IndividualCustomerController {
   async findAll() {
     const { customers } = await this.getAllCustomerService.execute();
     return { customers: customers.map(IndividualCustomerViewModel.toHttp) };
+  }
+
+  @Get(':id')
+  async findById(@Param('id') customerId: string) {
+    const { customer } = await this.getCustomerService.execute({
+      customerId,
+    });
+    return { customer: IndividualCustomerViewModel.toHttp(customer) };
   }
 
   @Put(':id')

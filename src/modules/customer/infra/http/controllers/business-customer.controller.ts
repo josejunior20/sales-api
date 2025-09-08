@@ -1,6 +1,7 @@
 import { CreateBusinessCustomerService } from '@modules/customer/domain/services/Create-business-customer.service';
 import { DeleteBusinessCustomerService } from '@modules/customer/domain/services/Delete-business-customer.service';
 import { GetAllBusinessCustomerService } from '@modules/customer/domain/services/Get-all-business-customer.service';
+import { GetBusinessCustomerService } from '@modules/customer/domain/services/Get-business-customer.service';
 import { UpdateBusinessCustomerService } from '@modules/customer/domain/services/Update-business-customer.service';
 import {
   Body,
@@ -21,6 +22,7 @@ export class BusinessCustomerController {
   constructor(
     private readonly createCustomerService: CreateBusinessCustomerService,
     private readonly getAllCustomerService: GetAllBusinessCustomerService,
+    private readonly getCustomerService: GetBusinessCustomerService,
     private readonly updateCustomerService: UpdateBusinessCustomerService,
     private readonly deleteCustomerService: DeleteBusinessCustomerService,
   ) {}
@@ -52,6 +54,14 @@ export class BusinessCustomerController {
   async findAll() {
     const { customers } = await this.getAllCustomerService.execute();
     return { customers: customers.map(BusinessCustomerViewModel.toHttp) };
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') customerId: string) {
+    const { customer } = await this.getCustomerService.execute({
+      customerId,
+    });
+    return { customer: BusinessCustomerViewModel.toHttp(customer) };
   }
 
   @Put(':id')
