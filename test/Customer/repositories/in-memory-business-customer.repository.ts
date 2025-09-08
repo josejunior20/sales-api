@@ -32,6 +32,13 @@ export class InMemoryBusinessCustomerRepository
     return (customer as BusinessCustomer) ?? null;
   }
 
+  async findByEmail(email: string): Promise<BusinessCustomer | null> {
+    const customer = this.customers.find(
+      data => data.email.getValue() === email,
+    );
+    return (customer as BusinessCustomer) ?? null;
+  }
+
   async findByCnpj(cnpj: string): Promise<BusinessCustomer | null> {
     const customer = this.customers.find(data => data.cnpj === cnpj);
     return (customer as BusinessCustomer) ?? null;

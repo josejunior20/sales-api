@@ -19,7 +19,7 @@ interface CreateBusinessCustomerResponse {
   customer: BusinessCustomer;
 }
 @Injectable()
-export class CreateBusinessCustomer {
+export class CreateBusinessCustomerService {
   constructor(
     private readonly customerRepository: BusinessCustomerRepository,
   ) {}

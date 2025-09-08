@@ -5,15 +5,15 @@ import {
 } from '@test/Customer/Business-customer.factory';
 import { InMemoryBusinessCustomerRepository } from '@test/Customer/repositories/in-memory-business-customer.repository';
 
-import { CreateBusinessCustomer } from './Create-business-customer.service';
+import { CreateBusinessCustomerService } from './Create-business-customer.service';
 
-let createBusinessCustomer: CreateBusinessCustomer;
+let createBusinessCustomer: CreateBusinessCustomerService;
 let inMemoryCustomerRepository: InMemoryBusinessCustomerRepository;
 
 describe('Create Business Customer', () => {
   beforeEach(() => {
     inMemoryCustomerRepository = new InMemoryBusinessCustomerRepository();
-    createBusinessCustomer = new CreateBusinessCustomer(
+    createBusinessCustomer = new CreateBusinessCustomerService(
       inMemoryCustomerRepository,
     );
   });

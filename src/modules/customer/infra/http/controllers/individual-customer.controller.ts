@@ -36,7 +36,7 @@ export class IndividualCustomerController {
       phone,
       address,
     });
-    return { message: 'User created successfully' };
+    return { message: 'Customer created successfully' };
   }
 
   @Get()
@@ -57,7 +57,7 @@ export class IndividualCustomerController {
       phone,
       address,
     });
-    return { message: 'User updated successfully' };
+    return { message: 'Customer updated successfully' };
   }
 
   @Delete(':id')

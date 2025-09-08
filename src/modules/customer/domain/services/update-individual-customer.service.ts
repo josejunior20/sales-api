@@ -34,9 +34,9 @@ export class UpdateIndividualCustomerService {
     );
     if (!customer) throw new CustomerNotFoundException();
     if (email && email !== customer.email.getValue()) {
-      const existingEmailUser =
+      const existingEmailCustomer =
         await this.individualCustomerRepository.findByEmail(email);
-      if (existingEmailUser && existingEmailUser.id !== customer.id) {
+      if (existingEmailCustomer && existingEmailCustomer.id !== customer.id) {
         throw new CustomerEmailConflictException();
       }
     }

@@ -7,6 +7,7 @@ export abstract class BusinessCustomerRepository {
   abstract save(customer: BusinessCustomer): Promise<void>;
   abstract delete(customerId: string): Promise<void>;
   abstract findById(customerId: string): Promise<BusinessCustomer | null>;
+  abstract findByEmail(email: string): Promise<BusinessCustomer | null>;
   abstract findByCnpj(cnpj: string): Promise<BusinessCustomer | null>;
   abstract findAll(
     page: number,

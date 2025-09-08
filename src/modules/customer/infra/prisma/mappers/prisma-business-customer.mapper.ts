@@ -17,7 +17,7 @@ type RawBusinessCustomer = {
   };
 };
 export class PrismaBusinessCustomerMapper {
-  static toPrisma(customer: BusinessCustomer) {
+  static toPrismaCreate(customer: BusinessCustomer) {
     return {
       companyName: customer.companyName,
       tradeName: customer.tradeName,
@@ -29,6 +29,23 @@ export class PrismaBusinessCustomerMapper {
           phone: customer.phone.getValue(),
           address: customer.address,
           createdAt: customer.createdAt,
+          updatedAt: customer.updatedAt,
+        },
+      },
+    };
+  }
+
+  static toPrismaUpdate(customer: BusinessCustomer) {
+    return {
+      companyName: customer.companyName,
+      tradeName: customer.tradeName,
+      cnpj: customer.cnpj,
+      customer: {
+        update: {
+          id: customer.id,
+          email: customer.email.getValue(),
+          phone: customer.phone.getValue(),
+          address: customer.address,
           updatedAt: customer.updatedAt,
         },
       },

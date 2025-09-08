@@ -11,14 +11,15 @@ export class PrismaBusinessCustomerRepository
   implements BusinessCustomerRepository
 {
   constructor(private readonly prisma: PrismaService) {}
+
   async create(customer: BusinessCustomer): Promise<void> {
-    const raw = PrismaBusinessCustomerMapper.toPrisma(customer);
+    const raw = PrismaBusinessCustomerMapper.toPrismaCreate(customer);
     await this.prisma.businessCustomer.create({
       data: raw,
     });
   }
   async save(customer: BusinessCustomer): Promise<void> {
-    const raw = PrismaBusinessCustomerMapper.toPrisma(customer);
+    const raw = PrismaBusinessCustomerMapper.toPrismaUpdate(customer);
     await this.prisma.businessCustomer.update({
       where: {
         customerId: customer.id,
@@ -36,6 +37,19 @@ export class PrismaBusinessCustomerRepository
   async findById(customerId: string): Promise<BusinessCustomer | null> {
     const raw = await this.prisma.businessCustomer.findUnique({
       where: { customerId },
+      include: { customer: true },
+    });
+    if (!raw) return null;
+    return PrismaBusinessCustomerMapper.toDomain(raw);
+  }
+
+  async findByEmail(email: string): Promise<BusinessCustomer | null> {
+    const raw = await this.prisma.businessCustomer.findFirst({
+      where: {
+        customer: {
+          email,
+        },
+      },
       include: { customer: true },
     });
     if (!raw) return null;

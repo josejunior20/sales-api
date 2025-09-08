@@ -56,13 +56,13 @@ export class BusinessCustomer extends Customer {
   }
 
   public updateProfile(
-    props: Partial<Pick<UpdateBusinessCustomerRequest, 'customerId'>> &
-      Omit<UpdateBusinessCustomerRequest, 'customerId'>,
+    props: Partial<Omit<UpdateBusinessCustomerRequest, 'customerId'>>,
   ): void {
-    this.updateCompanyName(props.companyName);
-    this.updateTradeName(props.tradeName);
-    this.updateEmail(new Email(props.email));
-    this.updatePhone(new Phone(props.phone));
-    this.updateAddress(props.address);
+    if (props.tradeName !== undefined) this.updateTradeName(props.tradeName);
+    if (props.email !== undefined) this.updateEmail(new Email(props.email));
+    if (props.phone !== undefined) this.updatePhone(new Phone(props.phone));
+    if (props.address !== undefined) this.updateAddress(props.address);
+    if (props.companyName !== undefined)
+      this.updateCompanyName(props.companyName);
   }
 }
