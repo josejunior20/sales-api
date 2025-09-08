@@ -17,7 +17,7 @@ describe('Get all Individual Customers (with pagination)', () => {
   it('Should return all persisted business customers when no pagination params are given (default)', async () => {
     for (let i = 0; i < 6; i++) {
       inMemoryIndividualCustomerRepository.customers.push(
-        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+        makeIndividualCustomer(),
       );
     }
 
@@ -41,7 +41,7 @@ describe('Get all Individual Customers (with pagination)', () => {
   it('Should return only the first page of customers', async () => {
     for (let i = 0; i < 6; i++) {
       inMemoryIndividualCustomerRepository.customers.push(
-        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+        makeIndividualCustomer(),
       );
     }
 
@@ -57,7 +57,7 @@ describe('Get all Individual Customers (with pagination)', () => {
   it('Should return the second page of customers', async () => {
     for (let i = 0; i < 6; i++) {
       inMemoryIndividualCustomerRepository.customers.push(
-        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+        makeIndividualCustomer(),
       );
     }
 
@@ -73,7 +73,7 @@ describe('Get all Individual Customers (with pagination)', () => {
   it('Should return the last page with remaining customers', async () => {
     for (let i = 0; i < 5; i++) {
       inMemoryIndividualCustomerRepository.customers.push(
-        makeIndividualCustomer({ cpf: `CPF-${i}` }),
+        makeIndividualCustomer(),
       );
     }
 

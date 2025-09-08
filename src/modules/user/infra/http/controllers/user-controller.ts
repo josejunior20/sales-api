@@ -37,13 +37,13 @@ export class UserController {
   @Post()
   @Public()
   async create(@Body() { email, name, password }: CreateUserDto) {
-    const { user } = await this.createUserService.execute({
+    await this.createUserService.execute({
       email,
       name,
       password,
     });
 
-    return { user: UserViewModel.toHttp(user) };
+    return { message: 'User created successfully' };
   }
 
   @Get()
@@ -62,7 +62,7 @@ export class UserController {
 
   @Put(':id')
   async updateUser(
-    @Param('id', CustomUUIDPipe) userId: string,
+    @Param('id') userId: string,
     @Body() { oldPassword, email, name, password }: UpdateUserDto,
   ) {
     await this.updateUserService.execute({
@@ -77,7 +77,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  async deleteUser(@Param('id', CustomUUIDPipe) userId: string) {
+  async deleteUser(@Param('id') userId: string) {
     await this.deleteUserService.execute({ userId });
     return { message: 'User deleted successfully' };
   }

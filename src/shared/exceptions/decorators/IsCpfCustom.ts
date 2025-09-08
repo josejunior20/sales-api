@@ -1,3 +1,4 @@
+import { Cpf } from '@shared/domain/values-objects/cpf.value-object';
 import {
   registerDecorator,
   ValidationArguments,
@@ -6,22 +7,25 @@ import {
 
 import { ExceptionMessage } from '../custom-class-validator/exception-message';
 
-export function IsEmailCustom(validationOptions?: ValidationOptions) {
+export function IsCpfCustom(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string) {
     registerDecorator({
-      name: 'IsEmailCustom',
+      name: 'IsCpfCustom',
       target: object.constructor,
-      propertyName,
+      propertyName: propertyName,
+      constraints: [],
       options: validationOptions,
       validator: {
-        validate(value: any) {
-          if (value === undefined || value === null) return true;
-          if (typeof value !== 'string') return false;
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          return emailRegex.test(value);
+        validate(value: string) {
+          try {
+            new Cpf(value);
+            return true;
+          } catch (error) {
+            return false;
+          }
         },
         defaultMessage(validationArguments: ValidationArguments) {
-          return ExceptionMessage.IsEmail(validationArguments.property);
+          return ExceptionMessage.IsCpf(validationArguments.property);
         },
       },
     });

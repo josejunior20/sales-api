@@ -9,4 +9,5 @@ export const ExceptionMessage = {
   IsUUID: (property: string) => `O campo ${property}, não é um id valido `,
   IsNumber: (property: string) =>
     `O campo ${property}, dever ser do tipo numérico`,
+  IsCpf: (property: string) => `O campo ${property} deve ser um cpf valido`,
 };

@@ -2,15 +2,15 @@ import { CustomerNotFoundException } from '@modules/customer/exceptions/customer
 import { makeBusinessCustomer } from '@test/Customer/Business-customer.factory';
 import { InMemoryBusinessCustomerRepository } from '@test/Customer/repositories/in-memory-business-customer.repository';
 
-import { UpdateBusinessCustomer } from './Update-business-customer.service';
+import { UpdateBusinessCustomerService } from './Update-business-customer.service';
 
-let updateBusinessCustomer: UpdateBusinessCustomer;
+let updateBusinessCustomer: UpdateBusinessCustomerService;
 let inMemoryBusinessCustomer: InMemoryBusinessCustomerRepository;
 
 describe('Update Business Customer', () => {
   beforeEach(() => {
     inMemoryBusinessCustomer = new InMemoryBusinessCustomerRepository();
-    updateBusinessCustomer = new UpdateBusinessCustomer(
+    updateBusinessCustomer = new UpdateBusinessCustomerService(
       inMemoryBusinessCustomer,
     );
   });

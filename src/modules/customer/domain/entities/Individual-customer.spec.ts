@@ -1,3 +1,4 @@
+import { Cpf } from '@shared/domain/values-objects/cpf.value-object';
 import { makeIndividualCustomer } from '@test/Customer/Individual-customer.factory';
 
 describe('Individual Customer entity', () => {
@@ -5,16 +6,16 @@ describe('Individual Customer entity', () => {
     const customer = makeIndividualCustomer();
 
     expect(customer.name).toBe('John Doe');
-    expect(customer.cpf).toBe('123.456.789-00');
+    expect(customer.cpf.getValue()).toBe('45663455809');
   });
 
   it('should allow overriding values', () => {
     const customer = makeIndividualCustomer({
       name: 'Jane Smith',
-      cpf: '987.654.321-00',
+      cpf: new Cpf('29918688130'),
     });
 
     expect(customer.name).toBe('Jane Smith');
-    expect(customer.cpf).toBe('987.654.321-00');
+    expect(customer.cpf.getValue()).toBe('29918688130');
   });
 });

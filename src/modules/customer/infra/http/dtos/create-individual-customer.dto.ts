@@ -1,12 +1,17 @@
+import { IsCpfCustom } from '@shared/exceptions/decorators/IsCpfCustom';
 import { IsEmailCustom } from '@shared/exceptions/decorators/IsEmailCustom';
 import { IsNotEmptyCustom } from '@shared/exceptions/decorators/IsNotEmptyCustom';
 import { IsStringCustom } from '@shared/exceptions/decorators/IsStringCustom';
-import { MinLengthCustom } from '@shared/exceptions/decorators/MinLengthCustom';
 
-export class CreateUserDto {
+export class CreateIndividualCustomerDto {
   @IsNotEmptyCustom()
   @IsStringCustom()
   name: string;
+
+  @IsNotEmptyCustom()
+  @IsStringCustom()
+  @IsCpfCustom()
+  cpf: string;
 
   @IsNotEmptyCustom()
   @IsStringCustom()
@@ -14,6 +19,10 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmptyCustom()
-  @MinLengthCustom(6)
-  password: string;
+  @IsStringCustom()
+  phone: string;
+
+  @IsNotEmptyCustom()
+  @IsStringCustom()
+  address: string;
 }

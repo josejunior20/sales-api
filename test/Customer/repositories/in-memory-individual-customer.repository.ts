@@ -29,8 +29,15 @@ export class InMemoryIndividualCustomerRepository
     return (customer as IndividualCustomer) ?? null;
   }
 
+  async findByEmail(email: string): Promise<IndividualCustomer | null> {
+    const customer = this.customers.find(
+      data => data.email.getValue() === email,
+    );
+    return (customer as IndividualCustomer) ?? null;
+  }
+
   async findByCpf(cpf: string): Promise<IndividualCustomer | null> {
-    const customer = this.customers.find(data => data.cpf === cpf);
+    const customer = this.customers.find(data => data.cpf.getValue() === cpf);
     return (customer as IndividualCustomer) ?? null;
   }
 

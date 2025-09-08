@@ -1,11 +1,22 @@
-import { PartialType } from '@nestjs/swagger';
+import { IsEmailCustom } from '@shared/exceptions/decorators/IsEmailCustom';
+import { IsStringCustom } from '@shared/exceptions/decorators/IsStringCustom';
 import { MinLengthCustom } from '@shared/exceptions/decorators/MinLengthCustom';
-import { IsOptional } from 'class-validator';
+import { IsOptional, ValidateIf } from 'class-validator';
 
-import { CreateUserDto } from './create-user-dto';
+export class UpdateUserDto {
+  @IsOptional()
+  @IsStringCustom()
+  name?: string;
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsOptional()
+  @IsEmailCustom()
+  email?: string;
+
   @IsOptional()
   @MinLengthCustom(6)
-  oldPassword: string;
+  password?: string;
+
+  @ValidateIf(dto => dto.password !== undefined)
+  @MinLengthCustom(6)
+  oldPassword?: string;
 }

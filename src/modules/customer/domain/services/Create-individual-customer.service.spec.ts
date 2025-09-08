@@ -6,15 +6,15 @@ import {
 import { InMemoryIndividualCustomerRepository } from '@test/Customer/repositories/in-memory-individual-customer.repository';
 
 import { IndividualCustomer } from '../entities/Individual-customer';
-import { CreateIndividualCustomer } from './Create-individual-customer.service';
+import { CreateIndividualCustomerService } from './Create-individual-customer.service';
 
-let createIndividualCustomer: CreateIndividualCustomer;
+let createIndividualCustomer: CreateIndividualCustomerService;
 let inMemoryCustomerRepository: InMemoryIndividualCustomerRepository;
 
 describe('Create Individual Customer', () => {
   beforeEach(() => {
     inMemoryCustomerRepository = new InMemoryIndividualCustomerRepository();
-    createIndividualCustomer = new CreateIndividualCustomer(
+    createIndividualCustomer = new CreateIndividualCustomerService(
       inMemoryCustomerRepository,
     );
   });
@@ -25,7 +25,7 @@ describe('Create Individual Customer', () => {
 
     await expect(
       createIndividualCustomer.execute(
-        makeIndividualCustomerRequest({ cpf: existingCustomer.cpf }),
+        makeIndividualCustomerRequest({ cpf: existingCustomer.cpf.getValue() }),
       ),
     ).rejects.toThrow(CustomerConflictException);
   });
@@ -47,7 +47,9 @@ describe('Create Individual Customer', () => {
       IndividualCustomer,
     );
     expect(
-      (inMemoryCustomerRepository.customers[0] as IndividualCustomer).cpf,
+      (
+        inMemoryCustomerRepository.customers[0] as IndividualCustomer
+      ).cpf.getValue(),
     ).toBe(request.cpf);
   });
 
