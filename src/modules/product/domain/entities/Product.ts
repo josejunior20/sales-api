@@ -4,12 +4,13 @@ import {
 } from '@shared/domain/entities/Base.entity';
 import { Replace } from '@shared/helpers/replace';
 export interface ProductProps {
+  code: string;
   name: string;
   description: string;
   price: number;
   quantity: number;
   category: string;
-  image: string;
+  image: string[];
 }
 export class Product extends BaseEntity {
   private productProps: ProductProps;
@@ -23,6 +24,9 @@ export class Product extends BaseEntity {
     this.productProps = props;
   }
 
+  public get code(): string {
+    return this.productProps.code;
+  }
   public get name(): string {
     return this.productProps.name;
   }
@@ -58,11 +62,11 @@ export class Product extends BaseEntity {
     this.productProps.category = category;
     this.touch();
   }
-  public get image(): string {
+  public get image(): string[] {
     return this.productProps.image;
   }
 
-  protected updateImage(image: string): void {
+  protected updateImage(image: string[]): void {
     this.productProps.image = image;
     this.touch();
   }

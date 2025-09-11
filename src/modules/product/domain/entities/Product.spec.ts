@@ -9,7 +9,7 @@ describe('Product', () => {
     expect(product.price).toBe(10);
     expect(product.quantity).toBe(10);
     expect(product.category).toBe('Category 1');
-    expect(product.image).toBe('Image 1');
+    expect(product.image[0]).toBe('Image 1');
   });
 
   it('should be able to update a product', () => {
@@ -20,7 +20,7 @@ describe('Product', () => {
       price: 20,
       quantity: 20,
       category: 'Category 2',
-      image: 'Image 2',
+      image: ['Image 2'],
     });
 
     expect(product.name).toBe('Product 2');
@@ -28,6 +28,6 @@ describe('Product', () => {
     expect(product.price).toBe(20);
     expect(product.quantity).toBe(20);
     expect(product.category).toBe('Category 2');
-    expect(product.image).toBe('Image 2');
+    expect(product.image[0]).toBe('Image 2');
   });
 });
