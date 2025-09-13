@@ -1,3 +1,6 @@
+import { InsufficientProductQuantityException } from '@modules/product/exceptions/insufficient-product-quantity.exception';
+import { InvalidProductDecreaseQuantityException } from '@modules/product/exceptions/invalid-product-decrease-quantity.exception';
+import { InvalidProductIncreaseQuantityException } from '@modules/product/exceptions/invalid-product-increase-quantity.exception';
 import {
   BaseEntity,
   BaseEntityProps,
@@ -69,6 +72,23 @@ export class Product extends BaseEntity {
   protected updateImage(image: string[]): void {
     this.productProps.image = image;
     this.touch();
+  }
+
+  decreaseQuantity(amount: number): void {
+    if (amount <= 0) {
+      throw new InvalidProductDecreaseQuantityException();
+    }
+    if (this.productProps.quantity < amount) {
+      throw new InsufficientProductQuantityException();
+    }
+    this.productProps.quantity -= amount;
+  }
+
+  increaseQuantity(amount: number): void {
+    if (amount <= 0) {
+      throw new InvalidProductIncreaseQuantityException();
+    }
+    this.productProps.quantity += amount;
   }
 
   public updateProfile(props: Partial<ProductProps>): void {
