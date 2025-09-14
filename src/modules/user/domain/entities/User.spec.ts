@@ -42,11 +42,11 @@ describe('User entity', () => {
     const oldUpdatedAt = user.updatedAt;
 
     user.updateProfile({ name: 'Updated Name' });
-    // user.updateProfile({ email: new Email('updated@example.com') });
+
     user.updateProfile({ password: 'newPass123' });
 
     expect(user.name).toBe('Updated Name');
-    // expect(user.email.getValue()).toBe('updated@example.com');
+
     expect(user.password).toBe('newPass123');
     expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(
       oldUpdatedAt.getTime(),
