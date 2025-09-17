@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
 
-@Module({})
+import { PrismaProductModule } from './infra/prisma/prisma-product.module';
+
+@Module({
+  imports: [PrismaProductModule],
+})
 export class ProductModule {}

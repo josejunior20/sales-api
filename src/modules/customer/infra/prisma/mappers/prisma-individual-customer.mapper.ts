@@ -9,6 +9,7 @@ type RawIndividualCustomer = {
   cpf: string;
   customer: {
     id: string;
+    type: string;
     email: string;
     phone: string;
     address: string;
@@ -25,6 +26,7 @@ export class PrismaIndividualCustomerMapper {
       customer: {
         create: {
           id: customer.id,
+          type: 'INDIVIDUAL',
           email: customer.email.getValue(),
           phone: customer.phone.getValue(),
           address: customer.address,
