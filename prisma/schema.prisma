@@ -35,18 +35,12 @@ model Customer {
   email              String              @unique
   phone              String
   address            String
-  type               CustomerType
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   IndividualCustomer IndividualCustomer?
   BusinessCustomer   BusinessCustomer?
 
   @@map("customers")
-}
-
-enum CustomerType {
-  INDIVIDUAL
-  BUSINESS
 }
 
 model IndividualCustomer {

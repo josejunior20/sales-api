@@ -16,8 +16,8 @@ export function IsNumberCustom(validationOptions?: ValidationOptions) {
       constraints: [],
       options: validationOptions,
       validator: {
-        validate(value: number) {
-          return isString(value);
+        validate(value: unknown) {
+          return typeof value === 'number' && !isNaN(value);
         },
         defaultMessage(validationArguments: ValidationArguments) {
           return ExceptionMessage.IsNumber(validationArguments.property);

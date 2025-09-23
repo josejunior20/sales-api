@@ -9,7 +9,6 @@ type RawBusinessCustomer = {
   cnpj: string;
   customer: {
     id: string;
-    type: string;
     email: string;
     phone: string;
     address: string;
@@ -26,7 +25,6 @@ export class PrismaBusinessCustomerMapper {
       customer: {
         create: {
           id: customer.id,
-          type: 'BUSINESS',
           email: customer.email.getValue(),
           phone: customer.phone.getValue(),
           address: customer.address,
@@ -44,8 +42,6 @@ export class PrismaBusinessCustomerMapper {
       cnpj: customer.cnpj,
       customer: {
         update: {
-          id: customer.id,
-          type: 'BUSINESS',
           email: customer.email.getValue(),
           phone: customer.phone.getValue(),
           address: customer.address,
